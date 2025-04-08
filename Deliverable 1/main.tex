@@ -1,7 +1,16 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 
-\usepackage[left=4cm,right=4cm]{geometry}
+\usepackage{cite}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{parskip}
+
+
+% >= 3.45cm is too large to fit 2 names per row
+\usepackage[left=3cm,right=3cm]{geometry}
+
 
 \title{
     CITS4404 Team Project - Building AI Trading Bots
@@ -57,7 +66,12 @@
 % alg comparrison?
 
 
-\bibliographystyle{plain}
-\bibliography{refs}
+\newpage
+\phantomsection
+\section{References}
+\vspace{-24pt}
+\renewcommand{\refname}{}
+\bibliographystyle{IEEEtran}
+\bibliography{main,gsa}
 
 \end{document}
