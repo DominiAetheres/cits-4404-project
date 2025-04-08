@@ -1,9 +1,23 @@
 \subsubsection{Temp: dot points}
 \begin{itemize}
     \item What problem with existing algorithms is the new algorithm attempting to solve?
+    \begin{itemize}
+        \item GSA uses gravity and momentum to increase the likelihood of escaping local minimums.
+        \item gbest \cite{gbestGSA}: helps prevent stagnation due to gravity.
+        \item Enhanced GSA \cite{EGSA}: helps exploration and avoiding being trapped in local minima.
+    \end{itemize}
+
     \item Why, or in what respect, have previous attempts failed?
+    
     \item What is the new idea presented in this paper?
+    \begin{itemize}
+        \item gbest: an additional force that pushes towards the last known global best value
+        \item EGSA: a mutation operation performed during optimisation iterations that replaces the worst candidates with new randomly selected/generated candidates.
+    \end{itemize}
+
     \item How is the new approach demonstrated?
+    
     \item What are the results or outcomes and how are they validated?
+    
     \item What is your assessment of the conclusions?
 \end{itemize}
