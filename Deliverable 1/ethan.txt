@@ -1,0 +1,41 @@
+\section{Modified Particle Swarm Optimisation with Simulated Annealing}
+
+\subsection{Particle Swarm Optimisation}
+
+Particle Swarm Optimisation (PSO) was first introduced by Kennedy and Eberhart [1] in 1995 as a method for optimisation in continuous nonlinear hypothesis spaces. It was inspired by the swarming social behaviour exhibited naturally by species such as fish or birds. The motivation for mimicking nature in this particular way was the observation that individual members in flocks benefit from the collective experiences of all other members [2]. An example could be birds flocking to a food source, many individuals within the flock would have no prior knowledge of the location of a new food source but the information spreads to all individuals through flocking behaviour. 
+
+The original PSO algorithm operated on several basic rules for each individual within the swarm. Using some cost function, each individual remembered its own personal best (pbest) position and also knows the global best (gbest) position found by any individual within the swarm.
+
+The velocity update of an individual depends on its distance relative to both pbest and gbest with hyperparameters p_increment and g_increment determining the magnitude of the velocity increase towards either point. The resulting velocity update is a vector addition of the velocity towards pbest and gbest.
+
+
+\subsection{Motivating Particle Swarm Optimisation with Simulated Annealing}
+
+Particle Swarm Optimisation with Simulated Annealing (SA-PSO) was introduced by Shieh et al. [3] to address two optimisation issues at the time of publishing.
+
+\begin{enumerate}
+    \item Genetic Algorithms (GA) struggled with epistasis where genes were highly correlated with each other within the chromosome causing issues with crossover for new generations. It was also more computationally inefficient compared to PSO.
+    \item PSO struggled with premature convergence to local minima due to localisation of the particles. Due to the attraction to pbest and gbest, exploration is largely discouraged in the algorithm.
+\end{enumerate}
+
+Simulated Annealing (SA) provides an exploration property using the metropolis process, which converges asymptomatically to the global optimum given certain preconditions. 
+A novel SA and PSO hybrid approach is proposed due to the computational efficiency of PSO compared to other optimisation algorithms and the more stable convergence properties of SA stemming from the algorithm’s greater ability to explore the hypothesis space. 
+
+\subsection{Method and Results}
+
+The SA-PSO algorithm contains 6 hyperparameters that require tuning before being applied to the benchmark functions. This is performed through a coarse exhaustive search of all potential values within a range. For example, the initial temperature value was tested for between 50 and 90 in increments of 10.
+The proposed SA-PSO algorithm and baseline GA, SA and PSO algorithms are then benchmarked on a selection of test functions with various dimensionality mostly taken from mathematics and physics such as the Zakharov function. The indicator used for performance is the rate of obtaining the optimal solution.
+Each algorithm was run on each benchmark function 100 times. The final performance metric comparing SA-PSO to its predecessor algorithms is the average rate of obtaining the optimal solution.
+The new algorithm demonstrated a significant performance improvement over the second-best algorithm PSO at an average convergence rate of 98.7% compared to 92.5%.
+The consistency of the algorithms were also demonstrated through the mean value of the solution obtained over the 100 runs for each benchmark function. SA-PSO demonstrated means which were closest to the known optimum on the vast majority of benchmarks demonstrating the stability of convergence of the algorithm.
+
+\subsection{Discussion}
+
+The paper concluded that SA-PSO demonstrated strong results as a consequence of combining the explorative nature of SA to counteract the tendency of PSO to fall into local extrema. The performance justifies the claim that that SA-PSO is a capable optimisation algorithm for non-linear optimisation problems. 
+However, the benchmark functions were all continuous and well-defined functions. The performance of SA-PSO on real-world data cannot be extrapolated from this paper as it may not be differentiable or continuous.
+
+
+
+[1] http://ai.unibo.it/sites/ai.unibo.it/files/u11/pso.pdf
+[2] Wilson, E.O. (1975). Sociobiology: The new synthesis
+[3] https://www.sciencedirect.com/science/article/pii/S0096300311012422
