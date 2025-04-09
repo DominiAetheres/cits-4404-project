@@ -2,7 +2,7 @@
 
 \subsection{Particle Swarm Optimisation}
 
-Particle Swarm Optimisation (PSO) was first introduced by Kennedy and Eberhart [1] in 1995 as a method for optimisation in continuous nonlinear hypothesis spaces. It was inspired by the swarming social behaviour exhibited naturally by species such as fish or birds. The motivation for mimicking nature in this particular way was the observation that individual members in flocks benefit from the collective experiences of all other members [2]. An example could be birds flocking to a food source, many individuals within the flock would have no prior knowledge of the location of a new food source but the information spreads to all individuals through flocking behaviour. 
+Particle Swarm Optimisation (PSO) was first introduced by Kennedy and Eberhart \cite{kennedy1995particle} in 1995 as a method for optimisation in continuous nonlinear hypothesis spaces. It was inspired by the swarming social behaviour exhibited naturally by species such as fish or birds. The motivation for mimicking nature in this particular way was the observation that individual members in flocks benefit from the collective experiences of all other members \cite{wilson2000sociobiology}. An example could be birds flocking to a food source, many individuals within the flock would have no prior knowledge of the location of a new food source but the information spreads to all individuals through flocking behaviour. 
 
 The original PSO algorithm operated on several basic rules for each individual within the swarm. Using some cost function, each individual remembered its own personal best (pbest) position and also knows the global best (gbest) position found by any individual within the swarm.
 
@@ -11,7 +11,7 @@ The velocity update of an individual depends on its distance relative to both pb
 
 \subsection{Motivating Particle Swarm Optimisation with Simulated Annealing}
 
-Particle Swarm Optimisation with Simulated Annealing (SA-PSO) was introduced by Shieh et al. [3] to address two optimisation issues at the time of publishing.
+Particle Swarm Optimisation with Simulated Annealing (SA-PSO) was introduced by Shieh et al. \cite{shieh2011modified} to address two optimisation issues at the time of publishing.
 
 \begin{enumerate}
     \item Genetic Algorithms (GA) struggled with epistasis where genes were highly correlated with each other within the chromosome causing issues with crossover for new generations. It was also more computationally inefficient compared to PSO.

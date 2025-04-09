@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[a4paper, 12pt]{extarticle}
 \usepackage[utf8]{inputenc}
 
 \usepackage{cite}
@@ -18,22 +18,22 @@
 }
 \author{
     Chen, Zijian\\
-    \texttt{22998691@student.uwa.edu.au}
+    \normalsize \texttt{22998691@student.uwa.edu.au}
     \and
     Dai, Ethan\\
-    \texttt{23625929@student.uwa.edu.au}
+    \normalsize \texttt{23625929@student.uwa.edu.au}
     \and
     Ida Bagus Prawira Janottama Kn\\
-    \texttt{23894575@student.uwa.edu.au}
+    \normalsize \texttt{23894575@student.uwa.edu.au}
     \and
     Nadeesha Adikari Adikari Appuhamilage\\
-    \texttt{24041382@student.uwa.edu.au}
+    \normalsize \texttt{24041382@student.uwa.edu.au}
     \and
     Su, Daniel\\
-    \texttt{22965999@student.uwa.edu.au}
+    \normalsize \texttt{22965999@student.uwa.edu.au}
     \and
     Townshend, Nathan\\
-    \texttt{22970882@student.uwa.edu.au}
+    \normalsize \texttt{22970882@student.uwa.edu.au}
 }
 \date{\today}
 
@@ -54,14 +54,122 @@
 
 
 \newpage
-\section{Algorithms}\label{sec:alg}
-
-% included because GSA references this section
-\subsection{Modified Particle Swarm Optimisation with Simulated Annealing}\label{sec:alg:sa-pso}
-
-\subsection{Gravity Search Algorithm and Modifications}\label{sec:alg:gsa}
+\section{Gravity Search Algorithm}\label{sec:alg:gsa}
 \input{gsa}
 
+% Ethan's section
+\newpage
+\section{Modified Particle Swarm Optimisation with Simulated Annealing}
+
+\subsection{Particle Swarm Optimisation}
+
+Particle Swarm Optimisation (PSO) was first introduced by Kennedy and Eberhart \cite{kennedy1995particle} in 1995 as a method for optimisation in continuous nonlinear hypothesis spaces. It was inspired by the swarming social behaviour exhibited naturally by species such as fish or birds. The motivation for mimicking nature in this particular way was the observation that individual members in flocks benefit from the collective experiences of all other members \cite{wilson2000sociobiology}. An example could be birds flocking to a food source, many individuals within the flock would have no prior knowledge of the location of a new food source but the information spreads to all individuals through flocking behaviour. 
+
+The original PSO algorithm operated on several basic rules for each individual within the swarm. Using some cost function, each individual remembered its own personal best (pbest) position and also knows the global best (gbest) position found by any individual within the swarm.
+
+The velocity update of an individual depends on its distance relative to both pbest and gbest with hyperparameters p\_increment and g\_increment determining the magnitude of the velocity increase towards either point. The resulting velocity update is a vector addition of the velocity towards pbest and gbest.
+
+
+\subsection{Motivating Particle Swarm Optimisation with Simulated Annealing}
+
+Particle Swarm Optimisation with Simulated Annealing (SA-PSO) was introduced by Shieh et al. \cite{shieh2011modified} to address two optimisation issues at the time of publishing.
+
+\begin{enumerate}
+    \item Genetic Algorithms (GA) struggled with epistasis where genes were highly correlated with each other within the chromosome causing issues with crossover for new generations. It was also more computationally inefficient compared to PSO.
+    \item PSO struggled with premature convergence to local minima due to localisation of the particles. Due to the attraction to pbest and gbest, exploration is largely discouraged in the algorithm.
+\end{enumerate}
+
+Simulated Annealing (SA) provides an exploration property using the metropolis process, which converges asymptomatically to the global optimum given certain preconditions. 
+A novel SA and PSO hybrid approach is proposed due to the computational efficiency of PSO compared to other optimisation algorithms and the more stable convergence properties of SA stemming from the algorithm’s greater ability to explore the hypothesis space. 
+
+\subsection{Method and Results}
+
+The SA-PSO algorithm contains 6 hyperparameters that require tuning before being applied to the benchmark functions. This is performed through a coarse exhaustive search of all potential values within a range. For example, the initial temperature value was tested for between 50 and 90 in increments of 10.
+
+The proposed SA-PSO algorithm and baseline GA, SA and PSO algorithms are then benchmarked on a selection of test functions with various dimensionality mostly taken from mathematics and physics such as the Zakharov function. The indicator used for performance is the rate of obtaining the optimal solution.
+
+Each algorithm was run on each benchmark function 100 times. The final performance metric comparing SA-PSO to its predecessor algorithms is the average rate of obtaining the optimal solution.
+
+The new algorithm demonstrated a significant performance improvement over the second-best algorithm PSO at an average convergence rate of 98.7\% compared to 92.5\%.
+
+The consistency of the algorithms were also demonstrated through the mean value of the solution obtained over the 100 runs for each benchmark function. SA-PSO demonstrated means which were closest to the known optimum on the vast majority of benchmarks demonstrating the stability of convergence of the algorithm.
+
+\subsection{Discussion}
+
+The paper concluded that SA-PSO demonstrated strong results as a consequence of combining the explorative nature of SA to counteract the tendency of PSO to fall into local extrema. The performance justifies the claim that that SA-PSO is a capable optimisation algorithm for non-linear optimisation problems. 
+However, the benchmark functions were all continuous and well-defined functions. The performance of SA-PSO on real-world data cannot be extrapolated from this paper as it may not be differentiable or continuous.
+
+% Nadeesha's section
+\newpage
+\section{Grey Wolf Optimizer}
+The Grey Wolf Optimizer (GWO) aims to overcome key limitations in existing optimization algorithms, such as getting trapped in local optima, poor convergence behaviour, and an imbalance between exploration and exploitation. While algorithms like Particle Swarm Optimization (PSO), Gravitational Search Algorithm (GSA), and Differential Evolution (DE) have been successful in many scenarios, they often struggle with these issues. GWO addresses them by mimicking the social hierarchy and hunting strategies of grey wolves, leading to a more adaptive and balanced search process. The algorithm's structure, based on four types of wolves: alpha ($\alpha$), beta ($\beta$), delta ($\delta$), and omega ($\omega$), enhances its ability to explore the search space globally and exploit promising regions effectively\cite{mirjalili2014grey}.
+
+\subsection{Limitations of Previous Approaches}
+The paper \cite{mirjalili2014grey} highlights that metaheuristic techniques tend to outperform classical heuristics due to their simplicity, ability to avoid local optima, flexibility across different problem domains without structural changes, and their derivative-free approach that enables the process to begin from a random solution. Moreover, population-based algorithms have shown significant advantages over single-solution-based approaches.
+
+GWO is a metaheuristic, population-based, swarm intelligence algorithm inspired by the social hierarchy and hunting behaviour of grey wolves. However, many existing algorithms still face critical challenges. A major issue is local optima trapping, where the algorithm prematurely settles on suboptimal solutions. Another significant challenge is the lack of balance between exploration and exploitation, some algorithms overexploit early good solutions and fail to adequately explore the broader search space, especially due to their stochastic behaviour. Furthermore, slow or improper convergence is also a limitation, as some algorithms struggle to efficiently reach high-quality solutions due to weak search strategies.These limitations have motivated the development of the GWO, which seeks to address these deficiencies through a more effective and biologically inspired approach. 
+
+\subsection{Introduction of the Novel Idea}
+Although many earlier swarm intelligence (SI) algorithms were inspired by natural hunting or search behaviors, they often overlooked the internal leadership dynamics within animal groups. The Grey Wolf Optimizer (GWO) introduces a novel idea by simulating the leadership hierarchy and social behaviour of grey wolves. It categorizes the population into four types of wolves, alpha ($\alpha$), beta ($\beta$), delta ($\delta$), and omega ($\omega$), to represent the hierarchy of decision-making. The alpha wolf represents the current best solution, the beta and delta are the second and third best, while the remaining candidates are considered omega wolves.
+
+The algorithm also mimics the three main phases of hunting: searching for prey, encircling prey, and attacking prey. These behaviors guide the population’s movement in the search space, with the alpha, beta, and delta wolves influencing the search direction. This structured yet dynamic mechanism allows the GWO algorithm to maintain a high degree of randomness and diversity, helping it to avoid local optima. \cite{kandasamy2020literature}
+
+\subsection{Demonstration of the New Approach}
+The new approach is demonstrated through benchmarking experiments on 29 test functions. Among these, 23 are classical benchmark functions, and the remaining 6 are composite benchmark functions. These functions are used to evaluate the algorithm’s performance in terms of exploration, exploitation, and local optima avoidance. Unimodal functions are used for exploitation analysis, multimodal functions for exploration analysis, and composite benchmark functions for local minima avoidance analysis. The algorithm was run 300 times for each benchmark, and statistical results (average and standard deviation) were compared to other popular swarm intelligence algorithms.   Additionally, the GWO algorithm is applied to three classical engineering design problems: tension design, welded beam design, and pressure vessel design. It was also tested on a real-world optical buffer design problem, running the algorithm 20 times to validate its ability to solve real-world problems with constraints. \cite{mirjalili2016multi}.
+
+\subsection{Results and Validation}
+The performance of GWO was validated through benchmarking against well-known optimization algorithms, such as PSO, GSA, and GA, across various test functions, including unimodal, multimodal, and composite functions. Statistically significant improvements were observed in key metrics such as Delay-Bandwidth Product (DBP) and Normalized DBP (NDBP), with GWO achieving a 93\% improvement in bandwidth and a 65\% improvement in NDBP compared to existing methods. Additionally, the algorithm was applied to a real-world optical buffer design problem, where it demonstrated superior performance.The results were validated through multiple runs to ensure consistency, and the algorithm was tested on a high-performance computing (HPC) cluster using multiple CPUs, validating its robustness in solving large-scale, complex problems.
+
+\subsection{Assessment of the Conclusions}
+The conclusions presented in the paper are generally well-supported by the experimental results. The authors demonstrate that GWO performs competitively against established optimization algorithms across a wide range of benchmark functions and real-world problems. The balance between exploration and exploitation is effectively illustrated, and the algorithm shows strong potential in avoiding local optima and achieving reliable convergence. However, while the findings are promising, broader testing on diverse problem domains would help further validate the general applicability of the approach. 
+
+% Ida Bagus' section
+\section{Harris Hawks Optimisation}
+The paper presents a new algorithm called Harris Hawks Optimiser, known as HHO \cite{heidari2019harris}. It aims to solve difficult optimisation problems. Many real-world problems are complex, they might involve many variables, have many possible good solutions which is called multimodal behaviour, change suddenly meaning they are non-differentiable, or have strict rules also known as constraints. Old methods, like standard mathematical techniques, often find these problems hard to solve. Newer algorithms, called metaheuristics like Genetic Algorithms or Particle Swarm Optimisation, are easier to use because they don't need complex maths. However, these newer algorithms also have problems. They can be sensitive to their settings, a process called parameter tuning, and sometimes get stuck on a solution that is good but not the best, known as a local optima. Also, a rule called the "No Free Lunch" theorem suggests no single algorithm is perfect for all problems. This encourages scientists to create new optimisation algorithms. HHO is a new algorithm, inspired by nature, designed to be a good option for solving these complex problems \cite{heidari2019harris}.
+
+Older algorithms often failed because they were not efficient for the complex problems found in the real world. Even the newer metaheuristic algorithms can fail. They might find a quite good solution quickly but then get stuck there, called premature convergence or local optima stagnation. This happens if they don't do the exploration (balance searching widely for different solutions) and searching deeply near good solutions, known as exploitation. Also, their success can depend a lot on choosing the right settings, which can be difficult. The idea that no single algorithm works best for everything also motivates looking for new approaches like HHO \cite{heidari2019harris}.
+
+HHO is new because it copies the teamwork and hunting style of Harris' hawks, especially their "surprise pounce" attack. The algorithm uses maths to copy how these smart birds hunt together. New ideas in HHO include copying how hawks work together to attack based on what the prey does, called the Teamwork Model. It uses a changing "escaping energy" number, represented as E, for the prey, which helps the algorithm switch smoothly from searching widely, the exploration phase, to searching deeply, the exploitation phase, as it runs, called the Changing Strategy. It has four different plans for the exploitation phase, chosen based on the prey's energy E and its chance of escaping, represented as r, copying how hawks change tactics, called Different Attack Plans. In some attack plans, HHO uses a special random walk called Levy flight, or LF, to copy the tricky, sudden movements of prey and the quick dives of the hawks, helping to search better in a local area. Also, hawks in the algorithm only move to a new position if it is better than their current one, which helps make the solutions better over time (Choosing Better Moves). These ideas aim to help HHO balance searching widely and searching deeply, avoid getting stuck on bad solutions, and find the best overall solution \cite{heidari2019harris}.
+
+The paper explains the HHO algorithm using mathematical formulas. It describes the exploration phase, which involves searching widely, and the four different exploitation phases, which involve searching deeply using different plans based on prey energy and escape chance. Each phase has its own maths equation telling the hawks how to move. The authors tested how well HHO works by trying it on many problems. They used 29 standard test problems often used to check optimisation algorithms. These included simple problems known as unimodal, problems with many good-but-not-best solutions known as multimodal, and very complex mixed problems called composition problems. They tested if HHO still works well when the problems become very large, having high dimensions up to 1000 variables. They also used HHO to solve six real engineering design problems that have strict rules or constraints. The paper includes a pseudocode for the algorithm, and the authors say the computer code is available online, making it easier for others to check or use it \cite{heidari2019harris}.
+
+HHO was compared to 11 other popular optimisation algorithms. The comparison looked at the best, worst, average, and consistency, measured by standard deviation, of the results over 30 tries for each problem. They also looked at how the algorithm behaved while searching, known as qualitative results. They tested how well HHO handled problems of increasing size, which is called scalability testing. A statistical test, the Wilcoxon rank-sum test, was used to see if HHO's better results were truly significant. The results showed HHO performed much better or was very competitive compared to the other algorithms on most test problems, including the very large ones. It was good at finding the best solutions and didn't slow down as much as others when problems got bigger. HHO also found the best or very good solutions for the real engineering problems. The statistical tests confirmed that HHO's improvements were meaningful in many cases \cite{heidari2019harris}.
+
+The authors conclude that HHO is a very good optimisation algorithm. They state it gives excellent or competitive results compared to many well-known algorithms on both standard test problems and real engineering problems. They believe its success comes from its special mix of search strategies copied from Harris' hawks, like the changing energy level, the different attack plans using Levy flights, and only choosing better moves. They tested HHO thoroughly on many different types of problems, compared it fairly to many other algorithms, and used statistics to check the results. The results consistently show HHO performing very well, handling large problems effectively, and finding good solutions for real-world tasks. The paper provides strong evidence that HHO is a useful new optimisation algorithm \cite{heidari2019harris}.
+
+\newpage
+\section{Artificial Bee Colony}
+
+\subsection{Background and Motivation}
+The Artificial Bee Colony (ABC) algorithm was first introduced by Dervis Karaboga in 2005. It was developed to address limitations observed in existing optimization algorithms, such as Genetic Algorithms (GA) and Particle Swarm Optimization (PSO), particularly their tendencies toward premature convergence and inadequate exploration of complex, high-dimensional search spaces.\cite{karaboga2007powerful}
+
+\subsection{Novelty and Improvements}
+ABC's uniqueness stems from its emulation of the natural foraging behaviour of honeybee swarms. The algorithm assigns bees into three distinct roles:\cite{karaboga2007powerful}\cite{karaboga2007artificial}
+\begin{enumerate}
+    \item Employed Bees: These bees exploit known food sources, representing current candidate solutions.
+    \item Onlooker Bees: They assess the quality of food sources based on information shared by employed bees and probabilistically choose sources to explore further.
+    \item Scout Bees: They conduct random searches to discover new food sources, aiding in escaping local optima and enhancing global exploration. 
+\end{enumerate}
+
+This division of labour enables ABC to balance exploration and exploitation effectively, mitigating the risk of premature convergence.
+
+\subsection{Core Concept and Mechanism}
+
+The operational framework of the ABC algorithm involves iterative cycles comprising:
+\begin{enumerate}
+    \item Initialization Phase: Random generation of an initial population of candidate solutions.
+    \item Employed Bee Phase: Each employed bee modifies its current solution based on a neighbourhood search and evaluates the nectar amount (fitness) of the new solution.
+    \item Onlooker Bee Phase: Onlooker bees select food sources based on the quality information shared by employed bees and further exploit these sources.
+    \item Scout Bee Phase: If a solution is not improved over a predetermined number of cycles, it is abandoned, and the corresponding employed bee becomes a scout, randomly generating a new solution.
+\end{enumerate}
+
+This process repeats until a termination criterion, such as a maximum number of iterations or a satisfactory fitness level, is met.\cite{karaboga2007artificial}
+
+\subsection{Validation of Effectiveness}
+Karaboga and Basturk conducted extensive evaluations of the ABC algorithm using benchmark optimization functions, comparing its performance against algorithms like GA, PSO, and Differential Evolution (DE). Their studies demonstrated that ABC outperformed these algorithms in terms of global optimization capability and robustness across various test scenarios.\cite{karaboga2007powerful}\cite{karaboga2007artificial}
+
+\subsection{Conclusion and Assessment}
+The findings from these studies affirm that the ABC algorithm effectively addresses the shortcomings of earlier optimization methods. Its design, inspired by natural foraging behaviors, allows for a harmonious balance between exploration and exploitation, making it particularly adept at navigating complex, multimodal optimization landscapes. While the algorithm's performance may vary depending on specific problem characteristics, its overall adaptability and efficiency render it a valuable tool in the field of optimization.\cite{kaya2022review}
 
 \newpage
 \section{Conclusions}\label{sec:conc}
