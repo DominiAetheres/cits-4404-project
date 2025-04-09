@@ -138,6 +138,40 @@ HHO was compared to 11 other popular optimisation algorithms. The comparison loo
 The authors conclude that HHO is a very good optimisation algorithm. They state it gives excellent or competitive results compared to many well-known algorithms on both standard test problems and real engineering problems. They believe its success comes from its special mix of search strategies copied from Harris' hawks, like the changing energy level, the different attack plans using Levy flights, and only choosing better moves. They tested HHO thoroughly on many different types of problems, compared it fairly to many other algorithms, and used statistics to check the results. The results consistently show HHO performing very well, handling large problems effectively, and finding good solutions for real-world tasks. The paper provides strong evidence that HHO is a useful new optimisation algorithm \cite{heidari2019harris}.
 
 \newpage
+\section{Artificial Bee Colony}
+
+\subsection{Background and Motivation}
+The Artificial Bee Colony (ABC) algorithm was first introduced by Dervis Karaboga in 2005. It was developed to address limitations observed in existing optimization algorithms, such as Genetic Algorithms (GA) and Particle Swarm Optimization (PSO), particularly their tendencies toward premature convergence and inadequate exploration of complex, high-dimensional search spaces.\cite{karaboga2007powerful}
+
+\subsection{Novelty and Improvements}
+ABC's uniqueness stems from its emulation of the natural foraging behaviour of honeybee swarms. The algorithm assigns bees into three distinct roles:\cite{karaboga2007powerful}\cite{karaboga2007artificial}
+\begin{enumerate}
+    \item Employed Bees: These bees exploit known food sources, representing current candidate solutions.
+    \item Onlooker Bees: They assess the quality of food sources based on information shared by employed bees and probabilistically choose sources to explore further.
+    \item Scout Bees: They conduct random searches to discover new food sources, aiding in escaping local optima and enhancing global exploration. 
+\end{enumerate}
+
+This division of labour enables ABC to balance exploration and exploitation effectively, mitigating the risk of premature convergence.
+
+\subsection{Core Concept and Mechanism}
+
+The operational framework of the ABC algorithm involves iterative cycles comprising:
+\begin{enumerate}
+    \item Initialization Phase: Random generation of an initial population of candidate solutions.
+    \item Employed Bee Phase: Each employed bee modifies its current solution based on a neighbourhood search and evaluates the nectar amount (fitness) of the new solution.
+    \item Onlooker Bee Phase: Onlooker bees select food sources based on the quality information shared by employed bees and further exploit these sources.
+    \item Scout Bee Phase: If a solution is not improved over a predetermined number of cycles, it is abandoned, and the corresponding employed bee becomes a scout, randomly generating a new solution.
+\end{enumerate}
+
+This process repeats until a termination criterion, such as a maximum number of iterations or a satisfactory fitness level, is met.\cite{karaboga2007artificial}
+
+\subsection{Validation of Effectiveness}
+Karaboga and Basturk conducted extensive evaluations of the ABC algorithm using benchmark optimization functions, comparing its performance against algorithms like GA, PSO, and Differential Evolution (DE). Their studies demonstrated that ABC outperformed these algorithms in terms of global optimization capability and robustness across various test scenarios.\cite{karaboga2007powerful}\cite{karaboga2007artificial}
+
+\subsection{Conclusion and Assessment}
+The findings from these studies affirm that the ABC algorithm effectively addresses the shortcomings of earlier optimization methods. Its design, inspired by natural foraging behaviors, allows for a harmonious balance between exploration and exploitation, making it particularly adept at navigating complex, multimodal optimization landscapes. While the algorithm's performance may vary depending on specific problem characteristics, its overall adaptability and efficiency render it a valuable tool in the field of optimization.\cite{kaya2022review}
+
+\newpage
 \section{Conclusions}\label{sec:conc}
 % \input{conclusion}
 % alg comparrison?
