@@ -17,7 +17,7 @@ To combat this, hybrid algorithms combining multiple optimisation algorithms hav
 However, while combining multiple algorithms this way improves performance, it can come at the cost of considerable additional computation, potentially even greater than the sum of running each algorithm sequentially.
 GSA is an effective optimisation algorithm for large-scale problems, as it is able to perform effectively with a significantly smaller agent count than other algorithms such as PSO \cite{EGSA}, however it is not exempt from the trade-off of exploration vs exploitation.
 Local search has been suggested as a way to improve its exploitation \cite{GSA}, but is also computationally expensive particularly in higher dimensional search spaces.
-Thus, significant improvements able to be made to the exploration and exploitation performance of algorithms with minimal additional computational power would be of interest for large-scale problems where it might be infeasible to use hybrid algorithms or local search.
+Thus, improvements able to be made to the exploration and exploitation performance of algorithms with minimal additional computational power would be of interest for large-scale problems where it might be infeasible to use hybrid algorithms or local search.
 
 
 \subsubsection{Enhanced GSA}\label{sec:alg:gsa:egsa}
@@ -34,14 +34,16 @@ Each algorithm was given 100 agents and 1000 iterations.
 While GSA consistently performed well, EGSA outperformed all other algorithms on all sample problems - both with more optimal results, and requiring less compute time.
 Additionally, EGSA was the only algorithm that found a solution for the large dataset that was actually economically viable to utilise.
 
-% TODO conclusion
+% TODO EGSA conclusion
+TODO EGSA conclusion paragraph.
 
 
-\subsubsection{GGSA}\label{sec:alg:gsa:ggsa}
-As the number of iterations of GSA increase agents all increase in mass, therefore slowing down the overall exploitation and search due to increased inertia - Mirjalili and Lewis \cite{GGSA} proposed gbest-guided GSA (GGSA) in 2014 as a computationally cheap way to combat this and improve the exploitation of GSA.
+\subsubsection{Gbest-guided GSA}\label{sec:alg:gsa:ggsa}
+As the number of iterations of GSA increase agents all increase in mass, therefore slowing down the overall search and exploitation due to increased inertia.
 GSA can additionally struggle during exploitation when a number of agents in a neighbourhood are attracted to each other and not necessarily able to accelerate towards a nearby optimum.
 % * Figure not included to save space given the 2-page restriction
-% An additional problem with GSA during exploitation is demonstrated in Figure \ref{fig:alg:gsa:neighbourhood-problem}, where agents in a neighbourhood are attracted to each other and not necessarily able to accelerate towards a nearby optimum.
+% An additional problem during exploitation is demonstrated in Figure \ref{fig:alg:gsa:neighbourhood-problem}, where agents in a neighbourhood are attracted to each other and not necessarily able to accelerate towards a nearby optimum.
+Mirjalili and Lewis \cite{GGSA} proposed gbest-guided GSA (GGSA) in 2014 as a computationally cheap way to combat these issues and improve the exploitation of GSA.
 
 % \begin{figure}[H]
 %     \centering
@@ -56,3 +58,4 @@ To prevent this from having a significant detrimental effect to early exploratio
 % TODO cover GGSA results
 
 % TODO GGSA conclusion
+TODO GGSA conclusion paragraph.
