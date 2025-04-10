@@ -37,25 +37,3 @@ Results show that sellers using FA algorithms consistently outperformed those us
 The paper [1] claims that FA outperforms traditional dynamic pricing models across a range of scenarios. It presents this as the first successful application of emergent synchronization models to price coordination. The conclusions drawn by the authors are well-supported by both theoretical and empirical evidence. They successfully demonstrate that biologically inspired synchronization can enhance the adaptiveness and profitability of dynamic pricing mechanisms in decentralized markets. Moreover, the authors are careful to acknowledge the limitations of their approach, such as the assumption of homogeneous seller behavior and the need for real-world testing.  
 
 Overall, the Firefly Algorithm represents a powerful and flexible approach to optimization, capable of handling diverse, multimodal, and high-dimensional problems with a simplicity that makes it appealing for real-world application. Its decentralized, self-organizing structure offers a natural advantage in distributed systems where coordination without explicit communication is needed. 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
