@@ -1,11 +1,16 @@
 \documentclass[a4paper, 12pt]{extarticle}
 \usepackage[utf8]{inputenc}
 
-\usepackage{cite}
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{parskip}
+\usepackage{booktabs}
+\usepackage{caption}
+
+\usepackage{biblatex}
+\addbibresource{main.bib}
+\addbibresource{gsa.bib}
 
 
 % >= 3.45cm is too large to fit 2 names per row
@@ -26,7 +31,7 @@
     Ida Bagus Prawira Janottama Kn\\
     \normalsize \texttt{23894575@student.uwa.edu.au}
     \and
-    Nadeesha Adikari Adikari Appuhamilage\\
+    Nadeesha Adikari\\
     \normalsize \texttt{24041382@student.uwa.edu.au}
     \and
     Su, Daniel\\
@@ -63,7 +68,7 @@
 
 \subsection{Particle Swarm Optimisation}
 
-Particle Swarm Optimisation (PSO) was first introduced by Kennedy and Eberhart \cite{kennedy1995particle} in 1995 as a method for optimisation in continuous nonlinear hypothesis spaces. It was inspired by the swarming social behaviour exhibited naturally by species such as fish or birds. The motivation for mimicking nature in this particular way was the observation that individual members in flocks benefit from the collective experiences of all other members \cite{wilson2000sociobiology}. An example could be birds flocking to a food source, many individuals within the flock would have no prior knowledge of the location of a new food source but the information spreads to all individuals through flocking behaviour. 
+Particle Swarm Optimisation (PSO) was first introduced by Kennedy and Eberhart \cite{kennedy1995particle} in 1995 as a method for optimisation in continuous nonlinear search spaces. It was inspired by the swarming social behaviour exhibited naturally by species such as fish or birds. The motivation for mimicking nature in this particular way was the observation that individual members in flocks benefit from the collective experiences of all other members \cite{wilson2000sociobiology}. An example could be birds flocking to a food source, many individuals within the flock would have no prior knowledge of the location of a new food source but the information spreads to all individuals through flocking behaviour. 
 
 The original PSO algorithm operated on several basic rules for each individual within the swarm. Using some cost function, each individual remembered its own personal best (pbest) position and also knows the global best (gbest) position found by any individual within the swarm.
 
@@ -79,8 +84,9 @@ Particle Swarm Optimisation with Simulated Annealing (SA-PSO) was introduced by 
     \item PSO struggled with premature convergence to local minima due to localisation of the particles. Due to the attraction to pbest and gbest, exploration is largely discouraged in the algorithm.
 \end{enumerate}
 
-Simulated Annealing (SA) provides an exploration property using the metropolis process, which converges asymptomatically to the global optimum given certain preconditions. 
-A novel SA and PSO hybrid approach is proposed due to the computational efficiency of PSO compared to other optimisation algorithms and the more stable convergence properties of SA stemming from the algorithm’s greater ability to explore the hypothesis space. 
+Simulated Annealing (SA) provides an exploration property using the metropolis process, which converges asymptomatically to the global optimum given certain preconditions. A novel SA and PSO hybrid approach is proposed due to the computational efficiency of PSO compared to other optimisation algorithms and the more stable convergence properties of SA stemming from the algorithm’s greater ability to explore the search space.
+
+A high initial temperature increases the acceptance probability for new (poorer) solutions, increasing the randomness of velocity updates leading to a larger subset of the search spacing being explored by particles. To stabilise the initial iterations, elitism (a concept from Genetic Algorithms where the top performing individuals are preserved into the next generation) for optimal solutions is maintained. As temperature drops, the swarm begins to converge more strongly onto gbest to perform exploitation of the known solutions in the search space.
 
 \subsection{Method and Results}
 
@@ -198,17 +204,47 @@ Overall, this paper presents a compelling and innovative solution to a persisten
 
 
 \newpage
-\section{Conclusions}\label{sec:conc}
-% \input{conclusion}
-% alg comparrison?
+\section{Conclusion}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{llll} 
+        \toprule
+        \textbf{Algorithm} & \textbf{Date} & \textbf{Category} & \textbf{Type} \\
+        \midrule
+        GSA         & 2011 & Natural Phenomena \& Laws of Science  & Single-solution  \\
+        SA-PSO      & 2014 & Swarm Intelligence                    & Population-based \\
+        GWO         & 2019 & Swarm Intelligence                    & Population-based \\
+        HHO         & 2007 & Swarm Intelligence                    & Population-based \\
+        ABC         & 2009 & Swarm Intelligence                    & Population-based \\
+        FA          & 2010 & Swarm Intelligence                    & Population-based \\
+        \bottomrule
+    \end{tabular}
+    \caption{Optimisation algorithms and their categories and types.}
+\end{table}
+
+\subsection{Population-based Swarm Intelligence Algorithms}
+Many modern population-based optimisation algorithms are rooted in the principles underpinning two major population-based algorithms emerging in the late 20th century; Genetic Algorithms first hypothesised by Turing, later implemented and popularised largely through Holland's work \cite{holland1992genetic}, and Particle Swarm Optimisation in 1995 by Kennedy et al. \cite{kennedy1995particle}. These early optimisation algorithms performed well on the problems with simple search spaces but tended to struggle on multimodal functions. Original GA and PSO had tendencies to fall into local extrema as they over-exploited their current locations in the search space.
+
+All the population-based methods reviewed attempted to address these problems by increasing the exploration of the search space by providing various mechanisms to encourage further exploration:
+\begin{enumerate}
+    \item SA-PSO uses simulated annealing where an initial high temperature parameter increases the randomness of new positions for individuals.
+    \item GWO uses a hierachical system for determining velocity updates of individuals by considering the positions of the top n individuals and giving each a weight.
+    \item HHO adapts the population's behaviour from focusing on exploration to exploitation and vice versa based on the quality of the current solutions.
+    \item ABC focuses on a population split into multiple classes with separate roles, where a group randomly explores the search space and other groups exploit around the current best solution.
+    \item FA incorporates a distance metric into individual position updates where attractiveness of an individual to any other depends not only on the quality of the solution but the distance to the other individual preventing the global best from exerting an outsized influence on velocities especially at initialisation.
+\end{enumerate}
+
+These algorithms provide some perspective into the various ways the simple concept of PSO can be altered to fit more complex search spaces. They all demonstrate that improved performance for swarm algorithms requires some enforced exploratory behaviour to counteract the inherent tendency for individuals to bee-line for the initial global best. 
+
+
+\subsection{Comparison Between GSA and Swarm Intelligence Algorithms}
+
+
 
 
 \newpage
-\phantomsection
-\section{References}
-\vspace{-24pt}
-\renewcommand{\refname}{}
-\bibliographystyle{IEEEtran}
-\bibliography{main,gsa}
+
+\printbibliography
 
 \end{document}
