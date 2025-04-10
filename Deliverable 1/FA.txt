@@ -1,14 +1,14 @@
-FireFly Algorithm 
+\section{FireFly Algorithm} 
 
-The Firefly Algorithm (FA) is a nature-inspired algorithm designed to address significant limitations in traditional global optimization methods, particularly in multimodal landscapes where multiple optimal solutions exist. Observing from the fireflies’ behavior, the algorithm leverages attraction-based movement and local interaction to guide solution agents through the search space. Initially proposed by Xin-She Yang in 2008 [2], FA offers a generalized and flexible optimization framework that has also been adapted to real-world domains, such as in the design of dynamic pricing strategies for autonomous pricing bots [1]. 
+The Firefly Algorithm (FA) is a nature-inspired algorithm designed to address significant limitations in traditional global optimization methods, particularly in multimodal landscapes where multiple optimal solutions exist. Observing from the fireflies’ behavior, the algorithm leverages attraction-based movement and local interaction to guide solution agents through the search space. Initially proposed by Xin-She Yang in 2008 \cite{yang2009firefly}, FA offers a generalized and flexible optimization framework that has also been adapted to real-world domains, such as in the design of dynamic pricing strategies for autonomous pricing bots \cite{jumadinova2008firefly}. 
 
-\{section} Motivations 
+\subsection{Motivations}
 
-Traditional algorithms such as Genetic Algorithms (GA) and Particle Swarm Optimization (PSO) struggle with multimodal landscapes. They tend to converge prematurely to local optima and often require elaborate tuning or hybridization to improve performance. GA relies on crossover and mutation mechanisms, which are often hard to tune and inefficient for fine-grained local search. PSO, although simpler and generally faster, tends to focus too heavily on the global best, causing particles to cluster prematurely and miss alternative optima [2]. Neither approach provides a natural way to simultaneously explore multiple promising regions. 
+Traditional algorithms such as Genetic Algorithms (GA) and Particle Swarm Optimization (PSO) struggle with multimodal landscapes. They tend to converge prematurely to local optima and often require elaborate tuning or hybridization to improve performance. GA relies on crossover and mutation mechanisms, which are often hard to tune and inefficient for fine-grained local search. PSO, although simpler and generally faster, tends to focus too heavily on the global best, causing particles to cluster prematurely and miss alternative optima \cite{yang2009firefly}. Neither approach provides a natural way to simultaneously explore multiple promising regions. 
 
-\{section} Methods 
+\subsection{Methods}
 
-FA is based on the flashing and attraction behavior of fireflies, particularly how real fireflies use light signals to attract mates and prey, and how these interactions naturally result in swarm-like movement and synchronization [2]. The algorithm formalizes this through three foundational principles: 
+FA is based on the flashing and attraction behavior of fireflies, particularly how real fireflies use light signals to attract mates and prey, and how these interactions naturally result in swarm-like movement and synchronization \cite{yang2009firefly}. The algorithm formalizes this through three foundational principles: 
 
 Unisex Attraction: Every firefly is attracted to every other, removing pair matching constraints and simplifies interactions. 
 
@@ -18,13 +18,13 @@ Distance-Dependent Influence: Attractiveness and brightness decay with distance,
 
 The movement rule integrates local exploitation (via attraction to brighter neighbors) and global exploration (via random perturbations), governed by tunable parameters. These parameters include γ, light absorption coefficient, controlling the visibility range, α, randomization factor, introducing diversity, and β, base attractiveness. Fireflies only respond to nearby, brighter fireflies, the swarm can split into multiple subgroups, each attracted to a different local optimum. This means FA can locate multiple good solutions in a single run,  and handle rugged fitness landscapes without extra diversity mechanisms. 
 
-\{section} Application and Results 
+\subsection{Application and Results} 
 
-The Firefly Algorithm’s biological metaphor proves adaptable in applications to dynamic pricing [1]. In these environments, each seller is modeled as a firefly. It emits “flashes”, a signal, when ready to update prices. Other sellers observe the signals and adjust their pricing strategies. This results in a decentralized form of coordination where sellers gradually align their price update intervals and magnitudes, without explicitly sharing strategies. 
+The Firefly Algorithm’s biological metaphor proves adaptable in applications to dynamic pricing \cite{jumadinova2008firefly}. In these environments, each seller is modeled as a firefly. It emits “flashes”, a signal, when ready to update prices. Other sellers observe the signals and adjust their pricing strategies. This results in a decentralized form of coordination where sellers gradually align their price update intervals and magnitudes, without explicitly sharing strategies. 
 
 The proposed method is demonstrated through the following: 
 
-Mathematical modeling and proof of convergence of synchronized pricing: proof that sellers using this model will allow initially unsynchronized pricebots to synchronize their price steps in equilibrium, increase the probability of making the best offer to buyers in the marker, and converge more accurately but less rapidly than a dynamic pricing model without synchronization [1]. 
+Mathematical modeling and proof of convergence of synchronized pricing: proof that sellers using this model will allow initially unsynchronized pricebots to synchronize their price steps in equilibrium, increase the probability of making the best offer to buyers in the marker, and converge more accurately but less rapidly than a dynamic pricing model without synchronization \cite{jumadinova2008firefly}. 
 
 Simulation of a multi-agent online market environment with realistic settings, including multiple sellers, buyers, and product attributes. 
 
@@ -32,8 +32,8 @@ Evaluation across various metrics: seller profit, market price stability, and co
 
 Results show that sellers using FA algorithms consistently outperformed those using unsynchronized methods. FA strategies improved profits by 10%–78% in most scenarios and provided faster, smoother convergence to competitive pricing, and greater price stability. Validation is achieved through simulations with varying market sizes (3 to 5 sellers, 500 to 1000 buyers), randomized buyer preferences, and multiple competitor configurations. However, Synchronization improves accuracy but may reduce speed of convergence. In rare cases (3.55% or less), multiple FA sellers competing against each other marginally reduce performance slightly due to internal competition. Still, in most configurations, FA sellers dominate market share, even when competing against game-theoretic or well-informed heuristic strategies like Myoptimal and Goal-Directed. 
 
-\{section} Conclusion 
+\subsection{Discussion}
 
-The paper [1] claims that FA outperforms traditional dynamic pricing models across a range of scenarios. It presents this as the first successful application of emergent synchronization models to price coordination. The conclusions drawn by the authors are well-supported by both theoretical and empirical evidence. They successfully demonstrate that biologically inspired synchronization can enhance the adaptiveness and profitability of dynamic pricing mechanisms in decentralized markets. Moreover, the authors are careful to acknowledge the limitations of their approach, such as the assumption of homogeneous seller behavior and the need for real-world testing.  
+The paper \cite{jumadinova2008firefly} claims that FA outperforms traditional dynamic pricing models across a range of scenarios. It presents this as the first successful application of emergent synchronization models to price coordination. The conclusions drawn by the authors are well-supported by both theoretical and empirical evidence. They successfully demonstrate that biologically inspired synchronization can enhance the adaptiveness and profitability of dynamic pricing mechanisms in decentralized markets. Moreover, the authors are careful to acknowledge the limitations of their approach, such as the assumption of homogeneous seller behavior and the need for real-world testing.  
 
 Overall, the Firefly Algorithm represents a powerful and flexible approach to optimization, capable of handling diverse, multimodal, and high-dimensional problems with a simplicity that makes it appealing for real-world application. Its decentralized, self-organizing structure offers a natural advantage in distributed systems where coordination without explicit communication is needed. 
