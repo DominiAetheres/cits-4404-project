@@ -197,11 +197,11 @@ Traditional algorithms such as Genetic Algorithms (GA) and Particle Swarm optimi
 
 FA is based on the flashing and attraction behaviour of fireflies, particularly how real fireflies use light signals to attract mates and prey, and how these interactions naturally result in swarm-like movement and synchronisation \cite{yang2009firefly}. The algorithm formalises this through three foundational principles: 
 
-Unisex Attraction: Every firefly is attracted to every other, removing pair matching constraints and simplifies interactions. 
-
-Attractiveness Linked to Brightness (Objective Value): A firefly’s "brightness" is determined by the value of the objective function — the better the solution, the brighter it is. Fireflies move towards brighter ones. 
-
-Distance-Dependent Influence: Attractiveness and brightness decay with distance, following either an exponential or rational decay function, inspired by the physical attenuation of light over distance. 
+\begin{enumerate}
+    \item Unisex Attraction: Every firefly is attracted to every other, removing pair matching constraints and simplifies interactions. 
+    \item Attractiveness Linked to Brightness (Objective Value): A firefly’s "brightness" is determined by the value of the objective function — the better the solution, the brighter it is. Fireflies move towards brighter ones.
+    \item Distance-Dependent Influence: Attractiveness and brightness decay with distance, following either an exponential or rational decay function, inspired by the physical attenuation of light over distance. 
+\end{enumerate}
 
 The movement rule integrates local exploitation (via attraction to brighter neighbours) and global exploration (via random perturbations), governed by tunable parameters. These parameters include $\gamma$, light absorption coefficient, controlling the visibility range, $\alpha$, randomisation factor, introducing diversity, and $\beta$, base attractiveness. Fireflies only respond to nearby, brighter fireflies, the swarm can split into multiple subgroups, each attracted to a different local optimum. This means FA can locate multiple good solutions in a single run,  and handle rugged fitness landscapes without extra diversity mechanisms. 
 
@@ -214,7 +214,6 @@ The proposed method is demonstrated through the following:
 Mathematical modelling and proof of convergence of synchronised pricing: proof that sellers using this model will allow initially unsynchronised pricebots to synchronise their price steps in equilibrium, increase the probability of making the best offer to buyers in the marker, and converge more accurately but less rapidly than a dynamic pricing model without synchronisation \cite{jumadinova2008firefly}. 
 
 Simulation of a multiagent online market environment with realistic settings, including multiple sellers, buyers, and product attributes. 
-
 Evaluation across various metrics: seller profit, market price stability, and convergence speed. Compared against Fixed Pricing, Myoptimal Pricing Strategy, Game-Theoretic Strategy, Goal-Directed Strategy, Derivative Following Pricing Strategy, and Minimax Regret Strategy. 
 
 Results show that sellers using FA algorithms consistently outperformed those using unsynchronised methods. FA strategies improved profits by 10\%–78\% in most scenarios and provided faster, smoother convergence to competitive pricing, and greater price stability. Validation is achieved through simulations with varying market sizes (3 to 5 sellers, 500 to 1000 buyers), randomised buyer preferences, and multiple competitor configurations. However, Synchronisation improves accuracy but may reduce speed of convergence. In rare cases (3.55\% or less), multiple FA sellers competing against each other marginally reduce performance slightly due to internal competition. Still, in most configurations, FA sellers dominate market share, even when competing against game-theoretic or well-informed heuristic strategies like Myoptimal and Goal-Directed. 
