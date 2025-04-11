@@ -13,7 +13,7 @@ The force due to gravity and the total number of agents can be modified over tim
 While GSA performed better in accuracy and convergence speed on benchmarks than other popular algorithms of the time such as PSO and Real Genetic Algorithm \cite{GSA}, there are a number of issues that have lead to modified versions of GSA being proposed and utilised.
 
 The two phases of these nature-inspired algorithms - exploration and exploitation - generally conflict, with increasing the performance of an algorithm in one phase generally weakening the performance in the other.
-To combat this, hybrid algorithms combining multiple optimisation algorithms have been tested, for example SA-PSO (see Section \ref{sec:} of this report) that uses Simulated Annealing to improve the exploitation performance of the PSO algorithm.
+To combat this, hybrid algorithms combining multiple optimisation algorithms have been tested, for example SA-PSO (see Section \ref{sec:sec:alg:sa-pso} of this report) that uses Simulated Annealing to improve the exploitation performance of the PSO algorithm.
 However, while combining multiple algorithms this way improves performance, it can come at the cost of considerable additional computation, potentially even greater than the sum of running each algorithm sequentially.
 GSA is an effective optimisation algorithm for large-scale problems, as it is able to perform effectively with a significantly smaller agent count than other algorithms such as PSO \cite{EGSA}, however it is not exempt from the trade-off of exploration vs exploitation.
 Local search has been suggested as a way to improve its exploitation \cite{GSA}, but is also computationally expensive particularly in higher dimensional search spaces.
