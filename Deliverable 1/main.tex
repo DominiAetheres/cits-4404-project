@@ -228,33 +228,40 @@ Overall, the Firefly Algorithm represents a powerful and flexible approach to op
         \toprule
         \textbf{Algorithm} & \textbf{Date} & \textbf{Category} & \textbf{Type} \\
         \midrule
-        GSA         & 2011 & Natural Phenomena \& Laws of Science  & Single-solution  \\
-        SA-PSO      & 2014 & Swarm Intelligence                    & Population-based \\
-        GWO         & 2019 & Swarm Intelligence                    & Population-based \\
-        HHO         & 2007 & Swarm Intelligence                    & Population-based \\
-        ABC         & 2009 & Swarm Intelligence                    & Population-based \\
-        FA          & 2010 & Swarm Intelligence                    & Population-based \\
+        GSA         & 2011 & Laws of Science (\& Swarm Intelligence)    & Population-based  \\
+        SA-PSO      & 2014 & Swarm Intelligence                         & Population-based \\
+        GWO         & 2019 & Swarm Intelligence                         & Population-based \\
+        HHO         & 2007 & Swarm Intelligence                         & Population-based \\
+        ABC         & 2009 & Swarm Intelligence                         & Population-based \\
+        FA          & 2010 & Swarm Intelligence                         & Population-based \\
         \bottomrule
     \end{tabular}
     \caption{Optimisation algorithms and their categories and types.}
 \end{table}
 
-\subsection{Population-based Swarm Intelligence Algorithms}
-Many modern population-based optimisation algorithms are rooted in the principles underpinning two major population-based algorithms emerging in the late 20th century; Genetic Algorithms first hypothesised by Turing, later implemented and popularised largely through Holland's work \cite{holland1992genetic}, and Particle Swarm Optimisation in 1995 by Kennedy et al. \cite{kennedy1995particle}. These early optimisation algorithms performed well on the problems with simple search spaces but tended to struggle on multimodal functions. Original GA and PSO had tendencies to fall into local extrema as they over-exploited their current locations in the search space.
+\subsection{Avoiding Early Convergence}
 
-All the population-based methods reviewed attempted to address these problems by increasing the exploration of the search space by providing various mechanisms to encourage further exploration:
-\begin{enumerate}
-    \item SA-PSO uses simulated annealing where an initial high temperature parameter increases the randomness of new positions for individuals.
-    \item GWO uses a hierachical system for determining velocity updates of individuals by considering the positions of the top n individuals and giving each a weight.
-    \item HHO adapts the population's behaviour from focusing on exploration to exploitation and vice versa based on the quality of the current solutions.
-    \item ABC focuses on a population split into multiple classes with separate roles, where a group randomly explores the search space and other groups exploit around the current best solution.
-    \item FA incorporates a distance metric into individual position updates where attractiveness of an individual to any other depends not only on the quality of the solution but the distance to the other individual preventing the global best from exerting an outsized influence on velocities especially at initialisation.
-\end{enumerate}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{l p{14cm}} 
+        \toprule
+        \textbf{Algorithm} & \textbf{Strategy}\\
+        \midrule
+        GSA         & Simulates an n-body gravitational pull based on the fitness of the candidate solutions for positional updates.\\
+        SA-PSO      & Uses simulated annealing where an initial high temperature parameter increases the randomness of new positions for individuals.\\
+        GWO         & Uses a hierachical system for determining velocity updates of individuals by considering the positions of the top n individuals and giving each a weight. \\
+        HHO         & Adapts the population's behaviour from focusing on exploration to exploitation and vice versa based on the quality of the current solutions. \\
+        ABC         & Splits the population into multiple classes with separate roles, one randomly explores the search space and others exploiting around the current best solution. \\
+        FA          & incorporates a distance metric into individual position updates where attractiveness of an individual to any other depends not only on the quality of the solution but the distance to the other individual preventing the global best from exerting an outsized influence on velocities especially at initialisation. \\
+        \bottomrule
+    \end{tabular}
+    \caption{Ways in which swarm algorithms prevent early convergence.}
+    \label{tab:early}
+\end{table}
 
-These algorithms provide some perspective into the various ways the simple concept of PSO can be altered to fit more complex search spaces. They all demonstrate that improved performance for swarm algorithms requires some enforced exploratory behaviour to counteract the inherent tendency for individuals to bee-line for the initial global best. 
+Many modern swarm intelligence optimisation algorithms are rooted in the principles underpinning two major algorithms emerging in the late 20th century; Genetic Algorithms first hypothesised by Turing, later implemented and popularised largely through Holland's work \cite{holland1992genetic}, and Particle Swarm Optimisation in 1995 by Kennedy et al. \cite{kennedy1995particle}. These early optimisation algorithms performed well on the problems with simple search spaces but tended to struggle on multimodal functions. Original GA and PSO had tendencies to fall into local extrema as they over-exploited their current locations in the search space.
 
-
-\subsection{Comparison Between GSA and Swarm Intelligence Algorithms}
+These algorithms provide some perspective into the various ways the simple concept of PSO can be altered to address the issue of early convergence (Table \ref{tab:early}). The common theme is that improved performance for swarm algorithms requires some enforced exploratory behaviour to counteract the inherent tendency for individuals to bee-line for the initial global best. 
 
 
 
