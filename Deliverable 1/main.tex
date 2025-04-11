@@ -19,7 +19,7 @@
 
 \title{
     CITS4404 Team Project - Building AI Trading Bots
-    \\ \large Group 6 - Literature Review
+    \\ \large Group 6 - Part I 
 }
 \author{
     Chen, Zijian\\
@@ -121,7 +121,7 @@ Although many earlier swarm intelligence (SI) algorithms were inspired by natura
 The algorithm also mimics the three main phases of hunting: searching for prey, encircling prey, and attacking prey. These behaviors guide the population’s movement in the search space, with the alpha, beta, and delta wolves influencing the search direction. This structured yet dynamic mechanism allows the GWO algorithm to maintain a high degree of randomness and diversity, helping it to avoid local optima. \cite{kandasamy2020literature}
 
 \subsection{Demonstration of the New Approach}
-The new approach is demonstrated through benchmarking experiments on 29 test functions. Among these, 23 are classical benchmark functions, and the remaining 6 are composite benchmark functions. These functions are used to evaluate the algorithm’s performance in terms of exploration, exploitation, and local optima avoidance. Unimodal functions are used for exploitation analysis, multimodal functions for exploration analysis, and composite benchmark functions for local minima avoidance analysis. The algorithm was run 300 times for each benchmark, and statistical results (average and standard deviation) were compared to other popular swarm intelligence algorithms.   Additionally, the GWO algorithm is applied to three classical engineering design problems: tension design, welded beam design, and pressure vessel design. It was also tested on a real-world optical buffer design problem, running the algorithm 20 times to validate its ability to solve real-world problems with constraints. \cite{mirjalili2016multi}.
+The new approach is demonstrated through benchmarking experiments on 29 test functions. Among these, 23 are classical benchmark functions, and the remaining 6 are composite benchmark functions. These functions are used to evaluate the algorithm’s performance in terms of exploration, exploitation, and local optima avoidance. Unimodal functions are used for exploitation analysis, multimodal functions for exploration analysis, and composite benchmark functions for local minima avoidance analysis. The algorithm was run 30 times for each benchmark, and statistical results (average and standard deviation) were compared to other popular swarm intelligence algorithms.   Additionally, the GWO algorithm is applied to three classical engineering design problems: tension design, welded beam design, and pressure vessel design. It was also tested on a real-world optical buffer design problem, running the algorithm 20 times to validate its ability to solve real-world problems with constraints. \cite{mirjalili2016multi}.
 
 \subsection{Results and Validation}
 The performance of GWO was validated through benchmarking against well-known optimization algorithms, such as PSO, GSA, and GA, across various test functions, including unimodal, multimodal, and composite functions. Statistically significant improvements were observed in key metrics such as Delay-Bandwidth Product (DBP) and Normalized DBP (NDBP), with GWO achieving a 93\% improvement in bandwidth and a 65\% improvement in NDBP compared to existing methods. Additionally, the algorithm was applied to a real-world optical buffer design problem, where it demonstrated superior performance.The results were validated through multiple runs to ensure consistency, and the algorithm was tested on a high-performance computing (HPC) cluster using multiple CPUs, validating its robustness in solving large-scale, complex problems.
@@ -226,20 +226,18 @@ Overall, the Firefly Algorithm represents a powerful and flexible approach to op
     \centering
     \begin{tabular}{l l p{7cm} l} 
         \toprule
-        \textbf{Algorithm} & \textbf{Date} & \textbf{Category} & \textbf{Type} \\
+        \textbf{Algorithm} & \textbf{Date} & \textbf{Category} & \textbf{Sub-category} \\
         \midrule
-        GSA         & 2011 & Swarm Intelligence (Laws of Science)                       & Population-based  \\
-        SA-PSO      & 2014 & Swarm Intelligence (Laws of Science \& Organism-based)     & Population-based \\
-        GWO         & 2019 & Swarm Intelligence (Organism-based)                        & Population-based \\
-        HHO         & 2007 & Swarm Intelligence (Organism-based)                        & Population-based \\
-        ABC         & 2009 & Swarm Intelligence (Organism-based)                        & Population-based \\
-        FA          & 2010 & Swarm Intelligence (Organism-based)                        & Population-based \\
+        GSA         & 2009 & Physical Phenomena \& Laws of Science      & Universe  \\
+        SA-PSO      & 2011 & Swarm Intelligence                         & Social Behaviour \\
+        GWO         & 2014 & Swarm Intelligence                         & Foraging \\
+        HHO         & 2019 & Organism-based                             & Fauna \\
+        ABC         & 2007 & Swarm Intelligence                         & Foraging \\
+        FA          & 2009 & Swarm Intelligence                         & Social Behaviour \\
         \bottomrule
     \end{tabular}
-    \caption{Optimisation algorithms and their categories and types.}
+    \caption{Optimisation algorithms and their categories and sub-categories (according to Alexandros Tzanetos' Mendelay repository).}
 \end{table}
-
-\subsection{Avoiding Early Convergence}
 
 \begin{table}[h!]
     \centering
@@ -252,17 +250,24 @@ Overall, the Firefly Algorithm represents a powerful and flexible approach to op
         GWO         & Uses a hierachical system for determining velocity updates of individuals by considering the positions of the top n individuals and giving each a weight. \\
         HHO         & Adapts the population's behaviour from focusing on exploration to exploitation and vice versa based on the quality of the current solutions. \\
         ABC         & Splits the population into multiple classes with separate roles, one randomly explores the search space and others exploiting around the current best solution. \\
-        FA          & incorporates a distance metric into individual position updates where attractiveness of an individual to any other depends not only on the quality of the solution but the distance to the other individual preventing the global best from exerting an outsized influence on velocities especially at initialisation. \\
+        FA          & Incorporates a distance metric into individual position updates where attractiveness of an individual to any other depends not only on the quality of the solution but the distance to the other individual preventing the global best from exerting an outsized influence on velocities especially at initialisation. \\
         \bottomrule
     \end{tabular}
     \caption{Ways in which swarm algorithms prevent early convergence.}
     \label{tab:early}
 \end{table}
 
-Many modern swarm intelligence optimisation algorithms are rooted in the principles underpinning two major algorithms emerging in the late 20th century; Genetic Algorithms first hypothesised by Turing, later implemented and popularised largely through Holland's work \cite{holland1992genetic}, and Particle Swarm Optimisation in 1995 by Kennedy et al. \cite{kennedy1995particle}. These early optimisation algorithms performed well on the problems with simple search spaces but tended to struggle on multimodal functions. Original GA and PSO had tendencies to fall into local extrema as they over-exploited their current locations in the search space.
+Many modern population-based optimisation algorithms are rooted in the principles underpinning two major algorithms emerging in the late 20th century; Genetic Algorithms first hypothesised by Turing, later implemented and popularised largely through Holland's work \cite{holland1992genetic}, and Particle Swarm Optimisation in 1995 by Kennedy et al. \cite{kennedy1995particle}. These early optimisation algorithms performed well on the problems with simple search spaces but tended to struggle on multimodal functions. Original GA and PSO had tendencies to fall into local extrema as they over-exploited their current locations in the search space.
 
-These algorithms provide some perspective into the various ways the simple concept of PSO can be altered to address the issue of early convergence (Table \ref{tab:early}). The common theme is that improved performance for swarm algorithms requires some enforced exploratory behaviour to counteract the inherent tendency for individuals to bee-line for the initial global best. 
+The algorithms reviewed in this paper provide some perspective into the various ways PSO can be altered to address the issue of early convergence (Table \ref{tab:early}). The common theme is that improved performance for swarm algorithms requires some enforced exploratory behaviour apart from hyperparameter tuning to counteract the inherent tendency for individuals to bee-line for the initial global best.
 
+Two overarching methods were used to achieve further exploration:
+\begin{enumerate}
+    \item Taking the top $n$ solutions and weight their influence on all individual updates (GSA, GWO, HHO, FA).
+    \item Using some form of stochasticity to explore the search space (SA-PSO, ABC).
+\end{enumerate}
+
+The algorithms were tested on similar but ultimately different functions so a direct comparison isn't possible. A possible future analysis of top $n$ methods and stochastic exploration methods on especially multimodal and flat unimodal functions can reveal the extent of their exploratory capabilities. However, all algorithms performed better compared to classic PSO and GA in their respective results, especially on heavily multimodal functions. 
 
 
 

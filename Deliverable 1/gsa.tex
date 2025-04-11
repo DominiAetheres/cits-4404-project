@@ -9,7 +9,7 @@ While Newtonian gravity has masses attracted inversely proportional to the squar
 Different implementations and versions of the GSA algorithm use either $R$ or $R^2$ - for example of the two papers discussed below, GGSA uses $R$, and EGSA uses $R^2$.
 
 
-\subsubsection{Motivation for improvements to GSA}\label{sec:alg:gsa:motiviation}
+\subsection{Motivation for improvements to GSA}\label{sec:alg:gsa:motiviation}
 While GSA performed better in accuracy and convergence speed on benchmarks than other popular algorithms of the time such as PSO and Real Genetic Algorithm \cite{GSA}, there are a number of issues that have lead to modified versions of GSA being proposed and utilised.
 
 The two phases of these nature-inspired algorithms - exploration and exploitation - generally conflict, with increasing the performance of an algorithm in one phase generally weakening the performance in the other.
@@ -20,7 +20,7 @@ Local search has been suggested as a way to improve its exploitation \cite{GSA},
 Thus, improvements able to be made to the exploration and exploitation performance of algorithms with minimal additional computational power would be of interest for large-scale problems where it might be infeasible to use hybrid algorithms or local search.
 
 
-\subsubsection{Enhanced GSA}\label{sec:alg:gsa:egsa}
+\subsection{Enhanced GSA}\label{sec:alg:gsa:egsa}
 Optimal Power Flow (OPF) for electrical grids is a large-scale optimisation problem of obvious interest to reduce operational costs, network losses, and environmental pollution.
 It has a discontinuous, nonlinear, and very large solution space making it difficult or infeasible to utilise some optimisation algorithms.
 Enhanced GSA (EGSA) was proposed by Jahan and Amjady \cite{EGSA} in 2013 to improve on the exploration of GSA, particularly for a problem with such a large solution space.
@@ -35,10 +35,9 @@ While GSA consistently performed well, EGSA outperformed all other algorithms on
 Additionally, EGSA was the only algorithm that found a solution for the large dataset that was actually economically viable to utilise.
 
 % TODO EGSA conclusion
-TODO EGSA conclusion paragraph.
 
 
-\subsubsection{Gbest-guided GSA}\label{sec:alg:gsa:ggsa}
+\subsection{Gbest-guided GSA}\label{sec:alg:gsa:ggsa}
 As the number of iterations of GSA increase agents all increase in mass, therefore slowing down the overall search and exploitation due to increased inertia.
 GSA can additionally struggle during exploitation when a number of agents in a neighbourhood are attracted to each other and not necessarily able to accelerate towards a nearby optimum.
 % * Figure not included to save space given the 2-page restriction
@@ -58,4 +57,3 @@ To prevent this from having a significant detrimental effect to early exploratio
 % TODO cover GGSA results
 
 % TODO GGSA conclusion
-TODO GGSA conclusion paragraph.
