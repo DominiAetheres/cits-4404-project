@@ -494,3 +494,10 @@ TSWLatexianTemp*
 
 # Built Visual Studio Code Extensions
 *.vsix
+Deliverable02/Data/BTC-2017min.csv
+Deliverable02/Data/BTC-2018min.csv
+Deliverable02/Data/BTC-2019min.csv
+Deliverable02/Data/BTC-2020min.csv
+Deliverable02/Data/BTC-2021min.csv
+Deliverable02/Data/BTC-Daily.csv
+Deliverable02/Data/BTC-Hourly.csv
