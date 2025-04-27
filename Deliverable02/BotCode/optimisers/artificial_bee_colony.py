@@ -56,7 +56,7 @@ class ArtificialBeeColony(Optimiser):
         # see `._generate_new_pos` for notes on using `np.where`
         employed_pos_shape = (self.employed_count, self.search_space.n_dim)
         employed_rand_ints = self._rng.integers(
-            low=self.search_space.dim_lower_bound, high=self.search_space.dim_upper_bound, size=employed_pos_shape, endpoint=True, dtype=opt_float_t)
+            low=self.search_space.dim_lower_bound, high=self.search_space.dim_upper_bound, size=employed_pos_shape, endpoint=True).astype(opt_float_t)
         employed_rand_floats = self._rng.uniform(
             low=self.search_space.dim_lower_bound, high=self.search_space.dim_upper_bound, size=employed_pos_shape).astype(opt_float_t)
         employed_dim_integer_flags = np.repeat(
@@ -69,7 +69,7 @@ class ArtificialBeeColony(Optimiser):
         # init onlooker bees
         onlooker_pos_shape = (self.onlooker_count, self.search_space.n_dim)
         onlooker_rand_ints = self._rng.integers(
-            low=self.search_space.dim_lower_bound, high=self.search_space.dim_upper_bound, size=onlooker_pos_shape, endpoint=True, dtype=opt_float_t)
+            low=self.search_space.dim_lower_bound, high=self.search_space.dim_upper_bound, size=onlooker_pos_shape, endpoint=True).astype(opt_float_t)
         onlooker_rand_floats = self._rng.uniform(
             low=self.search_space.dim_lower_bound, high=self.search_space.dim_upper_bound, size=onlooker_pos_shape).astype(opt_float_t)
         onlooker_dim_integer_flags = np.repeat(
@@ -78,6 +78,10 @@ class ArtificialBeeColony(Optimiser):
             onlooker_dim_integer_flags, onlooker_rand_ints, onlooker_rand_floats)
         self.onlooker_pos_fitness = np.fromiter(
             (self._eval_fitness(pos) for pos in self.onlooker_pos), opt_float_t)
+        
+        # init best results at location of first employed bee
+        self.best_pos = self.employed_pos[0]
+        self.best_fitness = self.employed_pos_fitness[0]
 
     def step(self):
         # TODO technically the bee pos updates should all happen *after* the new pos calcs
@@ -94,8 +98,8 @@ class ArtificialBeeColony(Optimiser):
                 current_pos=current_pos, self_index=employed_i, neighbour_pos_arr=self.employed_pos)
             new_pos_fitness = self._eval_fitness(new_pos)
 
-            # compare positions
-            if new_pos_fitness > current_pos_fitness:
+            # learn new pos if better
+            if self._comp_fitness(new_pos_fitness, current_pos_fitness):
                 self.employed_pos[employed_i] = new_pos
                 self.employed_pos_fitness[employed_i] = new_pos_fitness
                 self.employed_pos_age[employed_i] = 0
@@ -104,10 +108,10 @@ class ArtificialBeeColony(Optimiser):
 
         # onlooker food source selection
         onlooker_choices = self._rng.choice(range(
-            self.employed_count), p=self.employed_pos_fitness / np.sum(self.employed_pos_fitness))
+            self.employed_count), size=self.onlooker_count, p=self.employed_pos_fitness / np.sum(self.employed_pos_fitness))
 
         # onlooker exploration
-        for onlooker_i, employed_i in enumerate(onlooker_choices[:self.onlooker_count]):
+        for onlooker_i, employed_i in enumerate(onlooker_choices):
             # current pos
             current_pos = cast(Solution, self.onlooker_pos[onlooker_i])
             current_pos_fitness = cast(
@@ -120,8 +124,8 @@ class ArtificialBeeColony(Optimiser):
                 current_pos=self.employed_pos[employed_i], self_index=onlooker_i, neighbour_pos_arr=self.onlooker_pos)
             new_pos_fitness = self._eval_fitness(new_pos)
 
-            # compare positions
-            if new_pos_fitness > current_pos_fitness:
+            # learn new pos if better
+            if self._comp_fitness(new_pos_fitness, current_pos_fitness):
                 self.onlooker_pos[onlooker_i] = new_pos
                 self.onlooker_pos_fitness[onlooker_i] = new_pos_fitness
 
@@ -145,8 +149,8 @@ class ArtificialBeeColony(Optimiser):
         iter_best_pos, iter_best_fitness = max(
             [iter_employed_best_pos_and_fit, iter_onlooker_best_pos_and_fit], key=lambda v: v[1])
 
-        if self.best_fitness < iter_best_fitness:
-            self.best_pos = iter_best_pos
+        if self._comp_fitness(iter_best_fitness, self.best_fitness):
+            self.best_pos = np.copy(iter_best_pos)
             self.best_fitness = iter_best_fitness
 
     def _generate_new_pos(self) -> Solution:
@@ -168,7 +172,7 @@ class ArtificialBeeColony(Optimiser):
         """
 
         # ... random neighbour
-        neighbour_index = self._rng.integers(0, neighbour_pos_arr.size - 1)
+        neighbour_index = self._rng.integers(0, neighbour_pos_arr.shape[0] - 1)
         if neighbour_index >= self_index:
             neighbour_index += 1  # can't be the current index
         neighbour_pos_arr = cast(Solution, neighbour_pos_arr[neighbour_index])

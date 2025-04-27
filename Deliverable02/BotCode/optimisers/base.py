@@ -22,7 +22,7 @@ class SearchSpace(NamedTuple):
     dim_upper_bound: np.typing.NDArray
     """ Upper bounds of the dimensions. """
 
-    dim_is_integer: np.typing.NDArray
+    dim_is_integer: np.typing.NDArray[np.bool]
     """
     Dimensions that should be integer-valued instead of float-valued.
     If discrete but not only integer values, apply a mapping to the dimension
@@ -30,6 +30,9 @@ class SearchSpace(NamedTuple):
     """
 
     eval_fitness: Callable[[Solution], float]
+
+    minimisation: bool = True
+    """ If this a minimisation (default) or maximisation problem. """
 
 
 class Optimiser(ABC):
@@ -51,9 +54,16 @@ class Optimiser(ABC):
     def step(self):
         ...
 
-    def step_n(self, *, n_iter: int):
+    def step_n(self, n_iter: int):
         for _ in range(n_iter):
             self.step()
     
     def _eval_fitness(self, pos: Solution) -> float:
         return self.search_space.eval_fitness(pos)
+    
+    def _comp_fitness(self, lhs, rhs) -> bool:
+        """ Returns `True` iff lhs is more optimal than rhs. """
+        if self.search_space.minimisation:
+            return lhs < rhs
+        else:
+            return lhs > rhs
