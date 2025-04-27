@@ -1,3 +1,4 @@
+import math
 from typing import cast
 import numpy as np
 
@@ -37,8 +38,8 @@ class ArtificialBeeColony(Optimiser):
 
     def __init__(self, *, search_space: SearchSpace, rng_seed: int, population_size: int, pos_age_limit: int):
         """
-        * `population_size` (`int`): the number of food source positions, employed bees, and onlooker bees
-        * `pos_age_limit` (`int`): the max number of cycles for a candidate with no improvements before being abandoned
+        * `population_size`: the number of food source positions, employed bees, and onlooker bees
+        * `pos_age_limit`: the max number of cycles for a candidate with no improvements before being abandoned
         """
         super().__init__(search_space=search_space, rng_seed=rng_seed)
 
@@ -50,10 +51,33 @@ class ArtificialBeeColony(Optimiser):
         self.pos_age_limit = pos_age_limit
 
     def init(self):
-        # generate initial population
-        # TODO
-        # self.food_source_positions
-        ...
+        # init employed bees
+        self.employed_pos_age = np.zeros((self.employed_count), dtype=np.int32)
+        # see `._generate_new_pos` for notes on using `np.where`
+        employed_pos_shape = (self.employed_count, self.search_space.n_dim)
+        employed_rand_ints = self._rng.integers(
+            low=self.search_space.dim_lower_bound, high=self.search_space.dim_upper_bound, size=employed_pos_shape, endpoint=True, dtype=opt_float_t)
+        employed_rand_floats = self._rng.uniform(
+            low=self.search_space.dim_lower_bound, high=self.search_space.dim_upper_bound, size=employed_pos_shape).astype(opt_float_t)
+        employed_dim_integer_flags = np.repeat(
+            self.search_space.dim_is_integer[np.newaxis, :], self.employed_count, axis=0)
+        self.employed_pos = np.where(
+            employed_dim_integer_flags, employed_rand_ints, employed_rand_floats)
+        self.employed_pos_fitness = np.fromiter(
+            (self._eval_fitness(pos) for pos in self.employed_pos), opt_float_t)
+
+        # init onlooker bees
+        onlooker_pos_shape = (self.onlooker_count, self.search_space.n_dim)
+        onlooker_rand_ints = self._rng.integers(
+            low=self.search_space.dim_lower_bound, high=self.search_space.dim_upper_bound, size=onlooker_pos_shape, endpoint=True, dtype=opt_float_t)
+        onlooker_rand_floats = self._rng.uniform(
+            low=self.search_space.dim_lower_bound, high=self.search_space.dim_upper_bound, size=onlooker_pos_shape).astype(opt_float_t)
+        onlooker_dim_integer_flags = np.repeat(
+            self.search_space.dim_is_integer[np.newaxis, :], self.onlooker_count, axis=0)
+        self.onlooker_pos = np.where(
+            onlooker_dim_integer_flags, onlooker_rand_ints, onlooker_rand_floats)
+        self.onlooker_pos_fitness = np.fromiter(
+            (self._eval_fitness(pos) for pos in self.onlooker_pos), opt_float_t)
 
     def step(self):
         # TODO technically the bee pos updates should all happen *after* the new pos calcs
@@ -117,16 +141,25 @@ class ArtificialBeeColony(Optimiser):
             self.employed_pos_fitness)], self.employed_pos_fitness[i]
         iter_onlooker_best_pos_and_fit = self.onlooker_pos[i := np.argmax(
             self.onlooker_pos_fitness)], self.onlooker_pos_fitness[i]
-        
+
         iter_best_pos, iter_best_fitness = max(
             [iter_employed_best_pos_and_fit, iter_onlooker_best_pos_and_fit], key=lambda v: v[1])
-        
+
         if self.best_fitness < iter_best_fitness:
             self.best_pos = iter_best_pos
             self.best_fitness = iter_best_fitness
 
     def _generate_new_pos(self) -> Solution:
-        ...
+        # from testing `np.where` vs looping over the dim integer mask and doing `uniform` or `integers` for each,
+        # `np.where` is slower for < ~5 dims, comparable for ~10 dims and faster for > ~15 dims
+        # 10 seems like a reasonable number of dimensions, so `np.where` has been used
+
+        rand_ints = self._rng.integers(
+            low=self.search_space.dim_lower_bound, high=self.search_space.dim_upper_bound + 1)
+        rand_floats = self._rng.uniform(
+            low=self.search_space.dim_lower_bound, high=self.search_space.dim_upper_bound)
+
+        return np.where(self.search_space.dim_is_integer, rand_ints, rand_floats)
 
     def _explore(self, *, current_pos: Solution, self_index: int, neighbour_pos_arr: np.typing.NDArray) -> Solution:
         """
@@ -148,9 +181,19 @@ class ArtificialBeeColony(Optimiser):
         step_size = step_scalar * \
             cast(opt_float_t, current_pos[step_dim] -
                  neighbour_pos_arr[step_dim])
+        if self.search_space.dim_is_integer[step_dim]:
+            if abs(step_size) < 1:
+                # minimum step magnitude of 1
+                step_size = math.copysign(1, step_size)
+            else:
+                step_size = round(step_size)
 
         # perform the step
         new_pos = current_pos.copy()
         new_pos[step_dim] += step_size
+
+        # check bounds
+        new_pos[step_dim] = np.clip(
+            new_pos[step_dim], self.search_space.dim_lower_bound[step_dim], self.search_space.dim_upper_bound[step_dim])
 
         return new_pos
