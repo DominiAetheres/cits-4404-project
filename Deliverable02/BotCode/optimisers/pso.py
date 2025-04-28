@@ -67,10 +67,18 @@ class PSO(Optimiser):
         self.swarm_p_best_pos = self.swarm_pos.copy()
         self.swarm_p_best_fitness = self.swarm_fitness.copy()
 
-        # init swarm velocities to 0
-        self.swarm_vel = np.zeros_like(self.swarm_pos)
+        # init swarm velocities to U(-1, 1)
+        self.swarm_vel = np.random.uniform(
+            low=-1.0,
+            high= 1.0,
+            size=self.swarm_pos.shape
+        )
 
     def step(self):
+        # IMPORTANT NOTE: this version of PSO is based on the original 1995 Kennedy & Eberhart paper,
+        #       this means that there is no weighting variable in contrast to the 1998 PSO paper by
+        #       Shi and Eberhart.
+
         # first we calculate random coefficients to apply to p_best and g_best
         p_rand_coef = self._rng.random(self.swarm_pos.shape)
         g_rand_coef = self._rng.random(self.swarm_pos.shape)
