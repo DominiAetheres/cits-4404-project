@@ -19,4 +19,8 @@ if __name__ == "__main__":
 
     pso.init()
 
-    pso.step()
+    for i in range(100):
+        pso.step()
+        print(f"i: {i:04d}, score: {pso.g_best_fitness:.8g}, pos: {pso.g_best_pos}")
+    
+    print(f"Final best: pos ({pso.g_best_pos}) with score {pso.g_best_fitness}")
