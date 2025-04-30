@@ -1,11 +1,11 @@
 import numpy as np
 # Assuming trading_data_processor.py is in the same directory
-from TradingDataProcessor import TradingDataProcessor
+from data_processors import TradingDataProcessor
 
 # --- Main Execution Example ---
 
 if __name__ == "__main__":
-  filepath = 'BTC-Daily.csv' # Make sure this file exists in the same directory
+  filepath = './Deliverable02/Data/testDaily.csv' # Make sure this file exists in the same directory
 
   # 1. Create an instance of the processor - this reads the data
   print(f"Creating TradingDataProcessor for {filepath}...")

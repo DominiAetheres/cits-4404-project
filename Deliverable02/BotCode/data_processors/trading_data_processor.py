@@ -16,6 +16,10 @@ class TradingDataProcessor:
             filepath (str): The path to the CSV file containing trading data.
                             Expected to have a 'close' column.
         """
+        # Only change to True for manual debugging, disables printing of debug statements
+        # Warning statements are NOT muted
+        self.print = False      
+
         self.filepath = filepath
         self.closing_prices = self._read_data()
         if self.closing_prices is None:
@@ -33,7 +37,8 @@ class TradingDataProcessor:
             np.array: A numpy array of closing prices, or None if an error occurs.
         """
         df = None
-        print(f"Attempting to read data from: {self.filepath}")
+        if self.print:
+            print(f"Attempting to read data from: {self.filepath}")
         try:
             # Try reading with standard parameters first
             try:
@@ -96,7 +101,8 @@ class TradingDataProcessor:
                  print(f"Error: Column '{close_col_name}' found, but contained no valid numeric data after cleaning.")
                  return None
 
-            print(f"Successfully read and processed {len(close_prices)} data points from {self.filepath}")
+            if self.print:
+                print(f"Successfully read and processed {len(close_prices)} data points from {self.filepath}")
             return close_prices
 
         except FileNotFoundError:

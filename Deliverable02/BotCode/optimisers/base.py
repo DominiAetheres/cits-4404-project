@@ -34,6 +34,9 @@ class SearchSpace(NamedTuple):
     minimisation: bool = True
     """ If this a minimisation (default) or maximisation problem. """
 
+    def update_eval_function(self, eval: Callable[[Solution], float]) -> "SearchSpace":
+        return self._replace(eval_fitness=eval)
+
 
 class Optimiser(ABC):
     search_space: SearchSpace
