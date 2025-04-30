@@ -65,13 +65,13 @@ class TradingBotInstance():
     # private method to sell
     def _sell_btc(self):
         price = self.data_loader.get_price()
-        self.cash = self.btc * price
+        self.cash = self.btc * price * 0.97
         self.btc = 0
 
     # private method to buy
     def _buy_btc(self):
         price = self.data_loader.get_price()
-        self.btc = self.cash / price
+        self.btc = self.cash / price * 0.97
         self.cash = 0
 
     # simulates a run over data
@@ -112,8 +112,8 @@ class TradingBotOptimiser():
         
         # the following are the optimisation space dimensions
         # [window_sma, window_ema, window_lma, ema_alpha, w1, w2, w3, w4, w5, threshold]
-        lower_bounds = np.array((1, 1, 1, 1e-10, -5, -5, -5, -5, -5, 0))
-        upper_bounds = np.array((20, 20, 20, 1, 5, 5, 5, 5, 5, 50))
+        lower_bounds = np.array((1, 1, 1, 1e-10, -100, -100, -100, -100, -100, 0))
+        upper_bounds = np.array((100, 100, 100, 1, 10, 100, 100, 100, 100, 500))
     
         n_dims = lower_bounds.size
         int_dims = np.array((True, True, True, False, False, False, False, False, False, False))
