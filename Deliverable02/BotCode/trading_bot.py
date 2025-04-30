@@ -78,7 +78,7 @@ class TradingBotInstance():
     def simulate_run(self):
         # iterate through all the data in the data loader
         data = self.data_loader.step()
-        self.current_signal = self._trading_signal(*data)
+        self.current_signal = -1
 
         while data is not None:
             signal = self._trading_signal(*data)
