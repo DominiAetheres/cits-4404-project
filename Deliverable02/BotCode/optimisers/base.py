@@ -31,8 +31,8 @@ class SearchSpace(NamedTuple):
 
     eval_fitness: Callable[[Solution], float]
 
-    minimisation: bool = True
-    """ If this a minimisation (default) or maximisation problem. """
+    maximisation: bool = True
+    """ If this a maximisation (default) or maximisation problem. """
 
     def update_eval_function(self, eval: Callable[[Solution], float]) -> "SearchSpace":
         return self._replace(eval_fitness=eval)
@@ -66,7 +66,7 @@ class Optimiser(ABC):
     
     def _comp_fitness(self, lhs, rhs) -> bool:
         """ Returns `True` iff lhs is more optimal than rhs. """
-        if self.search_space.minimisation:
-            return lhs < rhs
-        else:
+        if self.search_space.maximisation:
             return lhs > rhs
+        else:
+            return lhs < rhs
