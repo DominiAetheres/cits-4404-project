@@ -129,6 +129,15 @@ class PSOSA(Optimiser):
         temp_swarm_vel = w * self.swarm_vel + p_dv + g_dv
         temp_swarm_pos = self.swarm_pos + temp_swarm_vel
 
+        # clip within search bounds
+        temp_swarm_pos = np.clip(temp_swarm_pos, self.search_space.dim_lower_bound, self.search_space.dim_upper_bound)
+
+        # enforce int features
+        if np.any(self.search_space.dim_is_integer):
+            temp_swarm_pos[:, self.search_space.dim_is_integer] = np.round(
+                temp_swarm_pos[:, self.search_space.dim_is_integer]
+            ).astype(int)
+
         # loop metropolis acceptance rule
         while True:
             # delta fitness between current and next positions
@@ -161,6 +170,15 @@ class PSOSA(Optimiser):
             # perform masking on velocity to preserve accepted velocities
             temp_swarm_vel = (mask * temp_swarm_vel) + (mask * (w * self.swarm_vel + p_dv + g_dv))
             temp_swarm_pos = self.swarm_pos + temp_swarm_vel
+
+            # clip within search bounds
+            temp_swarm_pos = np.clip(temp_swarm_pos, self.search_space.dim_lower_bound, self.search_space.dim_upper_bound)
+
+            # enforce int features
+            if np.any(self.search_space.dim_is_integer):
+                temp_swarm_pos[:, self.search_space.dim_is_integer] = np.round(
+                    temp_swarm_pos[:, self.search_space.dim_is_integer]
+                ).astype(int)
 
         # clip within search bounds
         self.swarm_pos = np.clip(self.swarm_pos, self.search_space.dim_lower_bound, self.search_space.dim_upper_bound)
