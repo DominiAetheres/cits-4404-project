@@ -1,8 +1,9 @@
+from typing import Type
+
 import numpy as np
+
 from data_processors import DataLoader
-from optimisers import SearchSpace, Solution
-from typing import Type, Union
-from optimisers import PSO, PSOSA, ArtificialBeeColony
+from optimisers import Optimiser, SearchSpace, Solution
 
 
 class TradingBotInstance():
@@ -107,7 +108,7 @@ class TradingBotOptimiser():
     Since parameters are different for each optimiser, **kwargs are taken at construction.
     """
 
-    def __init__(self, optimiser: Union[Type[PSO], Type[PSOSA], Type[ArtificialBeeColony]], dataset_path, **kwargs):
+    def __init__(self, dataset_path, optimiser: Optimiser):
         self.dataset_path = dataset_path
         
         # the following are the optimisation space dimensions
@@ -117,29 +118,27 @@ class TradingBotOptimiser():
     
         n_dims = lower_bounds.size
         int_dims = np.array((True, True, True, False, False, False, False, False, False, False))
-
-        self.search_space = SearchSpace(
+        
+        self.optimiser = optimiser
+        self.optimiser.search_space = SearchSpace(
             n_dim=n_dims, 
             dim_lower_bound=lower_bounds, 
             dim_upper_bound=upper_bounds,
             dim_is_integer=int_dims,
-            eval_fitness=None)
-        
-        self.optimiser = optimiser(search_space=self.search_space, rng_seed=42, **kwargs)
+            eval_fitness=self._fitness,
+            maximisation=True)
     
     def _fitness(self, pos) -> float:
         bot = TradingBotInstance(self.dataset_path, *pos.tolist())
-
         return bot.simulate_run()
     
-    def optimise(self, iter: int):
-        self.optimiser.search_space = self.optimiser.search_space.update_eval_function(self._fitness)
+    def optimise(self, iter: int) -> tuple[Solution, float]:
         self.optimiser.init()
+
         for i in range(iter):
-            self.optimiser.search_space = self.optimiser.search_space.update_eval_function(self._fitness)
             self.optimiser.step()
             if i % 5 == 0:
                 print(f"iteration: {i}")
         
-        print(f"Final best: pos ({self.optimiser.g_best_pos}) with score {self.optimiser.g_best_fitness}")
+        return self.optimiser.current_best()
         

@@ -36,7 +36,7 @@ class ArtificialBeeColony(Optimiser):
     best_pos: Solution
     best_fitness: float
 
-    def __init__(self, *, search_space: SearchSpace, rng_seed: int, population_size: int, pos_age_limit: int):
+    def __init__(self, *, search_space: SearchSpace | None = None, rng_seed: int, population_size: int, pos_age_limit: int):
         """
         * `population_size`: the number of food source positions, employed bees, and onlooker bees
         * `pos_age_limit`: the max number of cycles for a candidate with no improvements before being abandoned
@@ -201,3 +201,6 @@ class ArtificialBeeColony(Optimiser):
             new_pos[step_dim], self.search_space.dim_lower_bound[step_dim], self.search_space.dim_upper_bound[step_dim])
 
         return new_pos
+    
+    def current_best(self) -> tuple[Solution, float]:
+        return self.best_pos, self.best_fitness

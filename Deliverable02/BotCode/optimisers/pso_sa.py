@@ -50,8 +50,8 @@ class PSOSA(Optimiser):
     best_fitness: float
 
 
-    def __init__(self, 
-                search_space: SearchSpace, rng_seed: int, population_size: int, 
+    def __init__(self, *,
+                search_space: SearchSpace | None = None, rng_seed: int, population_size: int, 
                 p_increment: float, g_increment: float, iters: int,
                 w_max: float=1, w_min: float=0.2, v_max: float=1,
                 init_temp: float=100, cool_rate:float=0.9):
@@ -75,11 +75,6 @@ class PSOSA(Optimiser):
         self.cool_rate = cool_rate
 
 
-    def _find_g_best(self):
-        idx = np.argmax(self.swarm_fitness)
-        self.g_best_pos = self.swarm_pos[idx].copy()
-        self.g_best_fitness = self.swarm_fitness[idx].copy()
-
     def calculate_weight(self):
         w = self.w_max - ((self.w_max - self.w_min)/self.num_iters) * self.curr_iter
         return w
@@ -99,7 +94,9 @@ class PSOSA(Optimiser):
             (self._eval_fitness(pos) for pos in self.swarm_pos), opt_float_t)
         
         # find initial best pos
-        self._find_g_best()
+        idx = np.argmax(self.swarm_fitness)
+        self.g_best_pos = self.swarm_pos[idx].copy()
+        self.g_best_fitness = self.swarm_fitness[idx].copy()
         
         # p_best at init is simply their init positions
         self.swarm_p_best_pos = self.swarm_pos.copy()
@@ -188,3 +185,6 @@ class PSOSA(Optimiser):
         if self.swarm_p_best_fitness[idx] > self.g_best_fitness:
             self.g_best_fitness = self.swarm_p_best_fitness[idx].copy()
             self.g_best_pos = self.swarm_p_best_pos[idx]
+    
+    def current_best(self) -> tuple[Solution, float]:
+        return self.g_best_pos, self.g_best_fitness

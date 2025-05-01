@@ -34,17 +34,14 @@ class SearchSpace(NamedTuple):
     maximisation: bool = True
     """ If this a maximisation (default) or maximisation problem. """
 
-    def update_eval_function(self, eval: Callable[[Solution], float]) -> "SearchSpace":
-        return self._replace(eval_fitness=eval)
-
 
 class Optimiser(ABC):
     search_space: SearchSpace
     rng_seed: int
     _rng: np.random.Generator
 
-    def __init__(self, *, search_space: SearchSpace, rng_seed: int):
-        self.search_space = search_space
+    def __init__(self, *, search_space: SearchSpace | None, rng_seed: int):
+        self.search_space = search_space # type: ignore
         self.rng_seed = rng_seed
 
         self._rng = np.random.default_rng(rng_seed)
@@ -57,13 +54,17 @@ class Optimiser(ABC):
     def step(self):
         ...
 
+    @abstractmethod
+    def current_best(self) -> tuple[Solution, float]:
+        ...
+
     def step_n(self, n_iter: int):
         for _ in range(n_iter):
             self.step()
-    
+
     def _eval_fitness(self, pos: Solution) -> float:
         return self.search_space.eval_fitness(pos)
-    
+
     def _comp_fitness(self, lhs, rhs) -> bool:
         """ Returns `True` iff lhs is more optimal than rhs. """
         if self.search_space.maximisation:

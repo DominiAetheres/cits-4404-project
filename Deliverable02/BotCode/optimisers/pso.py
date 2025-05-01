@@ -32,8 +32,7 @@ class PSO(Optimiser):
     best_fitness: float
 
 
-    def __init__(self, search_space: SearchSpace, rng_seed: int, population_size: int, p_increment: float, g_increment: float):
-
+    def __init__(self, *, search_space: SearchSpace | None = None, rng_seed: int, population_size: int, p_increment: float, g_increment: float):
         super().__init__(search_space=search_space, rng_seed=rng_seed)
 
         self.population_size = population_size
@@ -41,10 +40,6 @@ class PSO(Optimiser):
         self.p_increment = p_increment
         self.g_increment = g_increment
 
-    def _find_g_best(self):
-        idx = np.argmax(self.swarm_fitness)
-        self.g_best_pos = self.swarm_pos[idx].copy()
-        self.g_best_fitness = self.swarm_fitness[idx].copy()
 
     def init(self):
         # init swarm positions (thanks nathan for the code)
@@ -61,7 +56,9 @@ class PSO(Optimiser):
             (self._eval_fitness(pos) for pos in self.swarm_pos), opt_float_t)
         
         # find initial best pos
-        self._find_g_best()
+        idx = np.argmax(self.swarm_fitness)
+        self.g_best_pos = self.swarm_pos[idx].copy()
+        self.g_best_fitness = self.swarm_fitness[idx].copy()
         
         # p_best at init is simply their init positions
         self.swarm_p_best_pos = self.swarm_pos.copy()
@@ -114,3 +111,6 @@ class PSO(Optimiser):
         if self.swarm_p_best_fitness[idx] > self.g_best_fitness:
             self.g_best_fitness = self.swarm_p_best_fitness[idx].copy()
             self.g_best_pos = self.swarm_p_best_pos[idx]
+    
+    def current_best(self) -> tuple[Solution, float]:
+        return self.g_best_pos, self.g_best_fitness
