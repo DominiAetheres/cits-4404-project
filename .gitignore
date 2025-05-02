@@ -503,3 +503,5 @@ Deliverable02/Data/BTC-Daily.csv
 Deliverable02/Data/BTC-Hourly.csv
 Deliverable02/Data/testMin.csv
 Deliverable02/Data/trainingMin.csv
+Deliverable02/BotCode/trainingDaily.csv
+Deliverable02/BotCode/testDaily.csv
