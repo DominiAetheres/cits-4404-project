@@ -152,7 +152,12 @@ class PSOSA(Optimiser):
             # random acceptance hurdle value
             R = np.random.uniform(0., 1.)
 
-            metropolis = np.e ** (d_fitness / (self.init_temp * (self.cool_rate ** self.curr_iter)))
+            #metropolis = np.e ** (d_fitness / (self.init_temp * (self.cool_rate ** self.curr_iter)))
+            #fix by Nadeesha,please check
+            exponent = d_fitness / (self.init_temp * (self.cool_rate ** self.curr_iter))
+            metropolis = np.exp(np.clip(exponent, -100, 100))
+
+            
             mask = (metropolis > R).astype(int).reshape(-1, 1)
    
             if np.sum(mask) == self.population_size:
