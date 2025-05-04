@@ -75,7 +75,7 @@ class PSOSA(Optimiser):
         self.cool_rate = cool_rate
 
         # set max SA iterations
-        self.max_disturbance = 10
+        self.max_disturbance = 25
 
 
     def calculate_weight(self):
