@@ -54,7 +54,8 @@ class PSOSA(Optimiser):
                 search_space: SearchSpace | None = None, rng_seed: int, population_size: int, 
                 p_increment: float, g_increment: float, iters: int,
                 w_max: float=1, w_min: float=0.2, v_max: float=1,
-                init_temp: float=100, cool_rate:float=0.9):
+                init_temp: float=100, cool_rate: float=0.9,
+                max_inner: int = 200):
 
         super().__init__(search_space=search_space, rng_seed=rng_seed)
 
@@ -73,6 +74,8 @@ class PSOSA(Optimiser):
 
         self.init_temp = init_temp
         self.cool_rate = cool_rate
+
+        self.max_inner = max_inner
 
 
     def calculate_weight(self):
@@ -139,6 +142,7 @@ class PSOSA(Optimiser):
             ).astype(int)
 
         # loop metropolis acceptance rule
+        tries = 0
         while True:
             # delta fitness between current and next positions
             d_fitness = np.fromiter((self._eval_fitness(pos) for pos in temp_swarm_pos), opt_float_t) - self.swarm_fitness
@@ -152,10 +156,21 @@ class PSOSA(Optimiser):
             # random acceptance hurdle value
             R = np.random.uniform(0., 1.)
 
-            metropolis = np.e ** (d_fitness / (self.init_temp * (self.cool_rate ** self.curr_iter)))
+            # --- safer Metropolis calculation: clip exponent to avoid overflow ---
+            expo = d_fitness / (self.init_temp * (self.cool_rate ** self.curr_iter))
+            expo = np.clip(expo, -50, 50)        # limits to a reasonable range
+            metropolis = np.exp(expo)
+            # --------------------------------------------------------------------
             mask = (metropolis > R).astype(int).reshape(-1, 1)
    
             if np.sum(mask) == self.population_size:
+                self.swarm_vel = temp_swarm_vel.copy()
+                self.swarm_pos += self.swarm_vel
+                break
+
+            tries += 1
+            if tries >= self.max_inner:
+                # force accept current temp_swarm updates to avoid infinite loop
                 self.swarm_vel = temp_swarm_vel.copy()
                 self.swarm_pos += self.swarm_vel
                 break

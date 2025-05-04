@@ -76,16 +76,18 @@ class TradingBotInstance():
         self.cash = 0
 
     # simulates a run over data
-    def simulate_run(self):
+    def simulate_run(self, return_equity=False):
         # iterate through all the data in the data loader
         data = self.data_loader.step()
         self.current_signal = -1
+        equity_curve = [self.cash]
 
         while data is not None:
             signal = self._trading_signal(*data)
 
             if self.current_signal == signal or signal == 0: 
                 data = self.data_loader.step()
+                equity_curve.append(self.cash if self.cash > 0 else self.btc * self.data_loader.get_price() * 0.97)
                 continue
             else:
                 if signal == -1:
@@ -94,10 +96,15 @@ class TradingBotInstance():
                     self._buy_btc()
                 data = self.data_loader.step()
                 self.current_signal = signal
+                equity_curve.append(self.cash if self.cash > 0 else self.btc * self.data_loader.get_price() * 0.97)
                 continue
 
         if self.cash == 0:
             self._sell_btc()
+            equity_curve.append(self.cash)
+
+        if return_equity:
+            return self.cash, equity_curve
 
         return self.cash
 
@@ -132,13 +139,18 @@ class TradingBotOptimiser():
         bot = TradingBotInstance(self.dataset_path, *pos.tolist())
         return bot.simulate_run()
     
-    def optimise(self, iter: int) -> tuple[Solution, float]:
+    def optimise(self, iter: int, return_curve=False) -> tuple[Solution, float] | tuple[Solution, float, list[float]]:
         self.optimiser.init()
+        curve = []
 
         for i in range(iter):
             self.optimiser.step()
+            current_best_fitness = self.optimiser.current_best()[1]
+            if return_curve:
+                curve.append(current_best_fitness)
             if i % 5 == 0:
                 print(f"iteration: {i}")
-        
+
+        if return_curve:
+            return self.optimiser.current_best()[0], self.optimiser.current_best()[1], curve
         return self.optimiser.current_best()
-        
