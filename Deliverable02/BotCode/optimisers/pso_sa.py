@@ -75,7 +75,7 @@ class PSOSA(Optimiser):
         self.cool_rate = cool_rate
 
         # set max SA iterations
-        self.max_disturbance = 25
+        self.max_disturbance = 5
 
 
     def calculate_weight(self):
@@ -106,7 +106,7 @@ class PSOSA(Optimiser):
         self.swarm_p_best_fitness = self.swarm_fitness.copy()
 
         # init swarm velocities to U(-1, 1)
-        self.swarm_vel = np.random.uniform(
+        self.swarm_vel = self._rng.uniform(
             low=-1.0,
             high= 1.0,
             size=self.swarm_pos.shape
@@ -157,7 +157,7 @@ class PSOSA(Optimiser):
             #mask = (d_fitness < 0).astype(int)
 
             # random acceptance hurdle value
-            R = np.random.uniform(0., 1.)
+            R = self._rng.uniform(0., 1.)
 
             #metropolis = np.e ** (d_fitness / (self.init_temp * (self.cool_rate ** self.curr_iter)))
             #fix by Nadeesha,please check
