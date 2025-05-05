@@ -146,7 +146,6 @@ class PSOSA(Optimiser):
 
         # loop metropolis acceptance rule
         while True:
-            self.curr_disturbance += 1
 
             # delta fitness between current and next positions
             d_fitness = np.fromiter((self._eval_fitness(pos) for pos in temp_swarm_pos), opt_float_t) - self.swarm_fitness
@@ -173,6 +172,8 @@ class PSOSA(Optimiser):
                 self.swarm_pos += self.swarm_vel
                 break
 
+            self.curr_disturbance += 1
+            
             # recalculate positions for particles not accepted
             p_rand_coef = 2 * self._rng.random(self.swarm_pos.shape) - 1
             g_rand_coef = 2 * self._rng.random(self.swarm_pos.shape) - 1
