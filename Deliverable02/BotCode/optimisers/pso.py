@@ -65,7 +65,7 @@ class PSO(Optimiser):
         self.swarm_p_best_fitness = self.swarm_fitness.copy()
 
         # init swarm velocities to U(-1, 1)
-        self.swarm_vel = np.random.uniform(
+        self.swarm_vel = self._rng.uniform(
             low=-1.0,
             high= 1.0,
             size=self.swarm_pos.shape
