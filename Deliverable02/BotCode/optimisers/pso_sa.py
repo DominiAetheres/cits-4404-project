@@ -74,6 +74,9 @@ class PSOSA(Optimiser):
         self.init_temp = init_temp
         self.cool_rate = cool_rate
 
+        # set max SA iterations
+        self.max_disturbance = 25
+
 
     def calculate_weight(self):
         w = self.w_max - ((self.w_max - self.w_min)/self.num_iters) * self.curr_iter
@@ -113,9 +116,12 @@ class PSOSA(Optimiser):
         # update current iter
         self.curr_iter += 1
 
+        # set current disturbance
+        self.curr_disturbance = 0
+
         # first we calculate random coefficients to apply to p_best and g_best
-        p_rand_coef = self._rng.random(self.swarm_pos.shape)
-        g_rand_coef = self._rng.random(self.swarm_pos.shape)
+        p_rand_coef = 2 * self._rng.random(self.swarm_pos.shape) - 1
+        g_rand_coef = 2 * self._rng.random(self.swarm_pos.shape) - 1
 
         # calculate weighting for current step
         w = self.calculate_weight()
@@ -140,6 +146,7 @@ class PSOSA(Optimiser):
 
         # loop metropolis acceptance rule
         while True:
+
             # delta fitness between current and next positions
             d_fitness = np.fromiter((self._eval_fitness(pos) for pos in temp_swarm_pos), opt_float_t) - self.swarm_fitness
             
@@ -160,14 +167,14 @@ class PSOSA(Optimiser):
             
             mask = (metropolis > R).astype(int).reshape(-1, 1)
    
-            if np.sum(mask) == self.population_size:
+            if np.sum(mask) == self.population_size or self.curr_disturbance == self.max_disturbance:
                 self.swarm_vel = temp_swarm_vel.copy()
                 self.swarm_pos += self.swarm_vel
                 break
 
             # recalculate positions for particles not accepted
-            p_rand_coef = self._rng.random(self.swarm_pos.shape)
-            g_rand_coef = self._rng.random(self.swarm_pos.shape)
+            p_rand_coef = 2 * self._rng.random(self.swarm_pos.shape) - 1
+            g_rand_coef = 2 * self._rng.random(self.swarm_pos.shape) - 1
 
             p_dv = self.p_increment * p_rand_coef * (self.swarm_p_best_pos - self.swarm_pos)
             g_dv = self.g_increment * g_rand_coef * (self.g_best_pos - self.swarm_pos)
