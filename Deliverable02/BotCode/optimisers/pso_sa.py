@@ -146,6 +146,7 @@ class PSOSA(Optimiser):
 
         # loop metropolis acceptance rule
         while True:
+            self.curr_disturbance += 1
 
             # delta fitness between current and next positions
             d_fitness = np.fromiter((self._eval_fitness(pos) for pos in temp_swarm_pos), opt_float_t) - self.swarm_fitness
