@@ -282,7 +282,7 @@ Figure \ref{fig:equity} shows the mean portfolio value over the unseen test peri
 
 We visualise how the learned thresholds and buy/sell signals evolve on the same test series for each algorithm, show how the buy/sell indicator toggles between +1, –1, and 0 over time. PSO-SA’s signal exhibits balanced responsiveness: it captures major up-trends and down-trends without excessive whipsaws. PSO generates more frequent, erratic flips, explaining its higher transaction count and associated slippage. ABC produces sparser signals, often missing shorter trend reversals. 
 
-The trading signal figures for this section are provided in the Appendix.
+The trading signal figures for this section are provided in the Appendix. Only the first signal in a series of recurring signals is executed. If there are multiple repeating buy signals, the asset is held. The reverse is true for sell signals.
 
 All three algorithms capture the major Bitcoin uptrends, but PSO often chases minor fluctuations (many small trades), consistent with its overfitting. ABC trades less frequently, while PSO-SA provides a middle ground. 
 
