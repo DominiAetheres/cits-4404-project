@@ -16,7 +16,6 @@
 
 \usepackage{biblatex}
 \addbibresource{main.bib}
-\addbibresource{gsa.bib}
 
 
 % >= 3.45cm is too large to fit 2 names per row
@@ -26,6 +25,7 @@
 \title{
     CITS4404 Team Project - Building AI Trading Bots
     \\ \large Group 6 - Part II: Report
+    \\ 2855 Words
 }
 \author{
     Chen, Zijian\\
@@ -56,40 +56,42 @@
 
 \begin{abstract}
     \noindent
-    This literature review provides an overview for six nature-inspired population-based algorithms. A synopsis is provided for each algorithm with reference to their original papers and a discussion on their merits in relation to obtaining an optimal solution is provided in the conclusion.
+    This report focuses on the application and investigation into the Artificial Bee Colony and Particle Swarm Optimisation with Simulated Annealing algorithms, both derived from Particle Swarm Optimisation, on optimising a Bitcoin trading bot. The bot's trading signal is calculated based on several moving averages, with the algorithms used to find the optimal parameters which control the moving average windows, and the relative importance of each of our moving average based features.
 \end{abstract}
 
 \section{Introduction}
-The increasing volatility and complexity of cryptocurrency markets, particularly Bitcoin, present a compelling challenge for algorithmic trading systems [1]. This project aims to address this challenge by developing AI-powered trading bots capable of making intelligent buy, sell, and hold decisions based on technical indicators and historical price patterns. The focus of this phase is to implement and evaluate trading strategies optimised by nature-inspired algorithms, using historical Bitcoin OHLCV data spanning several years. 
+The increasing volatility and complexity of cryptocurrency markets, particularly Bitcoin, present a compelling challenge for algorithmic trading systems \cite{dakalbab2024artificial}. This project aims to address this challenge by developing AI-powered trading bots capable of making intelligent buy, sell, and hold decisions based on technical indicators and historical price patterns. The focus of this phase is to implement and evaluate trading strategies optimised by nature-inspired algorithms, using historical Bitcoin OHLCV data spanning several years. 
 
 For Deliverable 2, mainly two algorithms were selected from our prior research:  Modified Particle Swarm Optimisation with Simulated Annealing (PSO-SA) and the Artificial Bee Colony (ABC) algorithm. All two methods are rooted in swarm intelligence and have demonstrated robust search capabilities across diverse optimisation problems. PSO was implemented as a useful baseline for comparison. 
 
-The PSO-SA algorithm combines Particle Swarm Optimisation's global search with Simulated Annealing's local refinement, making it well-suited for tuning technical indicators in noisy, dynamic financial markets [2]. The Artificial Bee Colony (ABC) algorithm, inspired by honeybee foraging, balances exploration and exploitation through a decentralised process involving employed, onlooker, and scout bees, offering a simple yet effective approach to optimising multi-parameter trading strategies [3]. 
+The PSO-SA algorithm combines Particle Swarm Optimisation's global search with Simulated Annealing's local refinement, making it well-suited for tuning technical indicators in noisy, dynamic financial markets \cite{psosa}. The Artificial Bee Colony (ABC) algorithm, inspired by honeybee foraging, balances exploration and exploitation through a decentralised process involving employed, onlooker, and scout bees, offering a simple yet effective approach to optimising multi-parameter trading strategies \cite{abc}. 
 
 This report outlines the implementation of optimisation algorithms to optimise a rule-based trading strategy using technical indicators such as Simple Moving Average (SMA), Exponential Moving Average (EMA) and Linear-weighted moving average (LMA). The trading bots are trained on historical data and evaluated on unseen test data, with performance measured based on the final cash value held at the end of the simulation, reflecting the profitability of the strategy. 
 
 \section{Overview of Investigated Algorithms}
-% needs cutting and rewriting
-In the first part of the project, six algorithms were explored and analysed, focusing on their inspirations, operational mechanics, and effectiveness in tackling complex optimisation problems. These algorithms are categorised based on their sources of inspiration—Swarm Intelligence, Physical Phenomena and Laws of Science, and Organism-Based strategies. Each algorithm brings unique features to the field of optimisation, as well as various levels of adaptability and convergence efficiency. 
 
-Particle Swarm Optimisation with Simulated Annealing (PSO-SA) combines Particle Swarm Optimisation (PSO) and Simulated Annealing (SA). PSO draws inspiration from the social behaviour of birds and fish, where individuals update their positions based on both personal and group knowledge. SA introduces randomness via the Metropolis criterion, enabling convergence toward the global optimum. The hybrid PSO-SA leverages PSO's global search ability with SA's local search strength. To avoid early convergence, PSO-SA uses SA's temperature parameter, initially high to increase randomness and explore diverse areas. As temperature decreases, the search becomes more exploitative, helping the algorithm escape local optima and refine solutions. [2] 
-
-The Gravitational Search Algorithm (GSA) is inspired by physical phenomena. It models optimisation as agents interacting through Newtonian gravity, where heavier masses attract others more strongly. This encourages diverse movement early, aiding in convergence. However, as gravitational forces weaken, exploration diminishes, and the algorithm can stagnate near local optima.[5] 
-
-Grey Wolf Optimiser (GWO) is a swarm intelligence algorithm inspired by grey wolf hunting and leadership. It updates solutions using a weighted influence from the top four wolves—alpha, beta, delta, and omega. This balances exploration and exploitation by considering multiple leaders, reducing premature convergence. [6] 
-
-Harris Hawks Optimisation (HHO) is based on Harris hawks' cooperative hunting. It dynamically switches between exploration/exploitation based on an escape energy variable tied to solution quality. This helps HHO adapt and escape local optima by increasing randomness when needed.[7] 
-
-Artificial Bee Colony (ABC) is a swarm intelligence algorithm based on bee foraging. It divides bees into employed (exploit known solutions), onlooker (choose based on quality), and scout (randomly explore) roles. This division prevents early convergence by continuously exploring while refining solutions. [3] 
-
-The Firefly Algorithm (FA) uses brightness-based attraction inspired by fireflies. Solutions move toward brighter ones, with influence decreasing with distance. This limits the global best's dominance and promotes distributed searching. However, performance relies on tuning attractiveness and can slow in high-dimensional spaces.[8] 
-
-These algorithms offer a spectrum of nature-inspired approaches. PSO-SA and ABC were chosen for implementation due to their complementary strengths—PSO-SA for balanced global/local search via hybridisation, and ABC for robust diversity handling. These traits suit them for complex financial optimisation tasks. 
+\begin{table}[ht]
+    \centering
+    \begin{tabularx}{\textwidth}{X X}
+      \toprule
+      \textbf{Algorithm} & \textbf{Description}\\
+      \midrule
+      Particle Swarm Optimisation with Simulated Annealing (PSO-SA) \cite{psosa} & Combines Partical Swarm Optimisation (PSO) \cite{pso} with Simulated Annealing (SA) to increase the probability of exploration of the search space. It accepts new positions for particles that are worse depending on the Metropolis effect as part of SA. \\
+      Grey Wolf Optimiser (GWO) \cite{wolf} & Emulates the social hierarchy of grey wolves. The fitness of the particles decides the seniority of each of the individuals. In the update step, particles are drawn more strongly to more senior individuals. This means the search is dependent on the top few positions rather than a single best.\\
+      Gravitational Search Algorithm (GSA) \cite{GSA} & Each particle within the swarm is assigned a gravitational value based on its fitness. Position updates are calculated based on the sum of the gravitational pull with all other bodies.\\
+      Harris Hawks Optimiser (HHO) \cite{hawks} & Emulates the hunting behaviour of Harris Hawks. Individuals searching a large area before selecting specific areas to exploit.\\
+      Artificial Bee Colony (ABC) \cite{abc} & Models the roles of bees within a hive. The idea is to split the individuals into multiple roles which fulfils exploration and exploitation of the search space at the same time.\\
+      Firefly Algorithm (FA) \cite{firefly}& Inspired by fireflies and uses distance as a factor for convergence. Each individual has a brightness based on their fitness, and attraction is dependent on both brightness and distance away from the corresponding particle.\\ 
+      \bottomrule
+    \end{tabularx}
+    \caption{Summary of the algorithms which were covered in the preceding literature review.}
+    \label{tab:algorithms}
+  \end{table}
 
 \section{Bot Design and Parameterisation}
 Bitcoin as an asset is fundamentally unlike other classes of assets. It is a currency rather than a stock and is consequently closer to foreign exchange trading rather than stock trading. There are few, if any, fundamental indicators for Bitcoin making it disproportionately impacted by naked supply and demand. This was especially true in its early days as it hadn't yet gained a reputation amongst younger investors as the trendy new replacement for gold as a store of value. Thus, common technical analysis indicators were chosen as inputs for the trading signal. 
 
-Three moving averages common in technical analysis are included in the trading signal informing the bot:[9] 
+Three moving averages common in technical analysis \cite{brock1992simple} are included in the trading signal informing the bot: 
 
 \begin{itemize}
     \item Simple moving average (SMA) 
@@ -128,7 +130,6 @@ The information provided to the trading bot may not be equally important to the 
 
 \begin{table}[ht]
     \centering
-    \label{tab:parameters}
     \begin{tabularx}{\textwidth}{X X X}
       \toprule
       \textbf{Parameter} & \textbf{Domain} & \textbf{Description} \\
@@ -146,6 +147,7 @@ The information provided to the trading bot may not be equally important to the 
       \bottomrule
     \end{tabularx}
     \caption{Parameters that are optimised for the trading bot.}
+    \label{tab:parameters}
   \end{table}
 
 The final component of the trading signal is the threshold parameter $\theta$. When the signal value exceeds the positive threshold, a buy signal is triggered and vice versa. This simplifies the trading signal to a value between 1 and -1 for buy and sell respectively. The trading signal is as follows where the function $s_{raw}$ produces the unclipped trading signal at time interval $t$ and $s$ is the final clipped trading signal.
@@ -190,7 +192,7 @@ The metropolis process is time-consuming, especially at lower temperatures as ve
 
 \section{Experiments and Evaluation Methodology}
 
-This project used daily Bitcoin OHLCV (Open, High, Low, Close, Volume) data from the publicly available Bitcoin Historical Dataset on Kaggle [4]. The dataset spans from 2014 to 2022, offering clean and consistent daily price and volume records. We selected the full available date range to ensure sufficient variation in market conditions for both training and evaluation. Although only the daily data was used in this project, the original dataset [4] also includes hourly and minute-level data. 
+This project used daily Bitcoin OHLCV (Open, High, Low, Close, Volume) data from the publicly available Bitcoin Historical Dataset on Kaggle \cite{kaggle}. The dataset spans from 2014 to 2022, offering clean and consistent daily price and volume records. We selected the full available date range to ensure sufficient variation in market conditions for both training and evaluation. Although only the daily data was used in this project, the original dataset \cite{kaggle} also includes hourly and minute-level data. 
 
 The daily data was split into a training set (covering the years up to 2019) consisting of 1,861 data points, and a testing set (covering from 2020) with 792 previously unseen data points. This split reflects a realistic workflow in which the trading bot is optimised using historical data and then evaluated on future data to assess its generalizability and robustness. 
 
@@ -234,7 +236,6 @@ We compared three population-based optimisers across training and testing phases
 
 \begin{table}[ht]
     \centering
-    \label{tab:algorithm_scores}
     \begin{tabular}{lrrr}
       \toprule
       \textbf{Algorithm} & \textbf{Training Score} & \textbf{Training Std. Dev.} & \textbf{Test Score} \\
@@ -245,6 +246,7 @@ We compared three population-based optimisers across training and testing phases
       \bottomrule
     \end{tabular}
     \caption{Training vs. test final cash across optimisers}
+    \label{tab:algorithm_scores}
 \end{table}
 
 Table \ref{tab:algorithm_scores} clearly shows that PSO achieves the highest training returns but suffers the largest drop to test, indicative of overfitting. PSO-SA strikes a middle ground—slightly lower training performance than PSO but more consistent test results. ABC is the most conservative: lowest training and test values, but a modest train-test gap. 
@@ -308,13 +310,16 @@ Figure \ref{fig:sensitivity} reveals pairwise correlations amongst the ten optim
 
 
 \section{Conclusion}
-In this project, we successfully implemented and evaluated three nature-inspired algorithms: Particle Swarm Optimisation (PSO), PSO with Simulated Annealing (PSO-SA), and Artificial Bee Colony (ABC) for optimising a rule-based Bitcoin trading bot. The core objective was to leverage these algorithms to find effective parameters for a strategy based on Simple, Exponential, and Linear-Weighted Moving Averages (SMA, EMA, LMA). Key outcomes include the functional implementation of the optimisation pipeline and a preliminary comparison of the algorithms based on back-tested performance on historical data (2014-2019 for training and 2020-2022 for testing). Quantitatively, while PSO achieved the highest average training score (31353.24), its test score (2374.42) was comparable to PSO-SA (2211.53, with a lower training standard deviation of 3934.15) and ABC (2070.11), suggesting challenges in generalisation to new market conditions.
+In this project, we successfully implemented and evaluated three nature-inspired algorithms: Particle Swarm Optimisation (PSO), PSO with Simulated Annealing (PSO-SA), and Artificial Bee Colony (ABC) for optimising a rule-based Bitcoin trading bot. The core objective was to use these algorithms to find effective parameters for a trading strategy based on Simple, Exponential, and Linear-Weighted Moving Averages (SMA, EMA, LMA). Quantitatively, while PSO achieved the highest average training score (31353.24), its test score (2374.42) was comparable to PSO-SA (2211.53, with a lower training standard deviation of 3934.15) and ABC (2070.11), suggesting challenges in generalisation to new market conditions.
 
-There are several lessons that can be learned regarding the algorithm behaviour. The project confirmed that standard PSO, while often converging rapidly in initial stages, is prone to premature convergence on suboptimal solutions in complex landscapes. In contrast, PSO-SA and ABC, which incorporate mechanisms to enhance exploration, tended to converge more slowly overall as they traded off immediate exploitation for a broader search. This exploration, with PSO-SA using simulated annealing and ABC employing role differentiation, aimed to better navigate the complex, multimodal search space of trading parameters. This key consideration is, while PSO's faster initial convergence might be advantageous for simpler search spaces, the more methodical exploration of PSO-SA and ABC is crucial for tackling complex optimisation problems like the one addressed here, where PSO-SA showed promise in achieving high-quality solutions.
+The project found that standard PSO converges quickly onto extrema. In contrast, PSO-SA and ABC tended to converge more slowly overall as they traded off immediate exploitation for a broader search. While PSO's faster initial convergence might be advantageous for simpler search spaces, the exploration of PSO-SA and ABC can be important for tackling complex optimisation problems. It turned out that our search space may have been relatively simple, or too limited as PSO performed the best by immediately exploiting to the best solution.
 
-We found that preparing trading strategies for optimisation while building the bot is quite challenging. Defining the search space by parameterising indicator window sizes and weights resulted in a high-dimensional problem, and we also learned about some inter-dependencies between these parameters. The performance was sensitive not only to the algorithm's effectiveness but also to the choice of indicators and the structure of the trading rules. Furthermore, the extreme volatility and signal noise characteristic of the cryptocurrency market made it difficult for the optimisation algorithms to find consistently profitable parameters. Financial data often changes its patterns over time (non-stationarity), making it difficult for strategies optimised on past data to remain consistently effective, illustrating the limitations of back-testing.
+Defining the search space by parameterising indicator window sizes and weights resulted in a high-dimensional problem, and we also learned about some inter-dependencies between these parameters. The performance was sensitive not only to the algorithm's effectiveness but also to the choice of indicators and the structure of the trading rules. Financial data often changes its patterns over time, making it difficult for strategies optimised on past data to remain consistently effective, illustrating the limitations of back-testing.
 
-For future work, several paths could be explored. Testing the optimised bots on more recent data or in a live trading simulation would provide further insights into their reliability. Better results might be achieved by incorporating more advanced indicators or features, or by exploring other algorithms from Part 1 (e.g., GWO, HHO). Furthermore, refining the evaluation to include consistency metrics, such as the standard deviation of scores, in addition to the final profit, may lead to more robust and reliable trading strategies. 
+For future work, several paths could be explored. Testing the optimised bots in a live trading simulation would provide further insights into their reliability. Better results might be achieved by incorporating more advanced indicators or features, or by exploring other algorithms from Part 1 (e.g., GWO, HHO). Furthermore, refining the evaluation to include consistency metrics, such as the standard deviation of scores, in addition to the final profit, may lead to more robust and reliable trading strategies. 
+
+\newpage
+\printbibliography
 
 \newpage
 \appendix
