@@ -194,10 +194,12 @@ This project used daily Bitcoin OHLCV (Open, High, Low, Close, Volume) data from
 
 The daily data was split into a training set (covering the years up to 2019) consisting of 1,861 data points, and a testing set (covering from 2020) with 792 previously unseen data points. This split reflects a realistic workflow in which the trading bot is optimised using historical data and then evaluated on future data to assess its generalizability and robustness. 
 
-We employed a grid search approach to tune the strategy's hyperparameters for each optimiser (PSO, PSO-SA, ABC). Over 100 iterations, we explored combinations of values for parameters such as population size, acceleration coefficients, and others. Each candidate configuration was evaluated using a custom scoring function, which was designed to reflect desirable characteristics in a trading bot's behaviour. 
+We employed a grid search approach to tune the strategy's hyperparameters for each optimiser (PSO, PSO-SA, ABC). Over 100 iterations, we explored combinations of values for parameters such as population size, acceleration coefficients, and others. Each candidate configuration was evaluated using a custom scoring function, which was designed to reflect desirable characteristics in a trading bot's behaviour.
+The fitness of each bot was defined as the amount of cash it held at the end of the back-tested period, a direct indicator of how successful its trading strategy was under historical market conditions.
+
 The final selected hyperparameters for each optimiser are listed in the table below. The number 42 was used as the seed in the grid search, as well as for initial training and testing.  
 
-\begin{table}[ht]
+\begin{table}[H]
     \centering
     \label{tab:optimizers}
     \begin{tabular}{llr}
