@@ -60,34 +60,34 @@
 \end{abstract}
 
 \section{Introduction}
-The increasing volatility and complexity of cryptocurrency markets, particularly Bitcoin, present a compelling challenge for algorithmic trading systems [1]. This project aims to address this challenge by developing AI-powered trading bots capable of making intelligent buy, sell, and hold decisions based on technical indicators and historical price patterns. The focus of this phase is to implement and evaluate trading strategies optimized by nature-inspired algorithms, using historical Bitcoin OHLCV data spanning several years. 
+The increasing volatility and complexity of cryptocurrency markets, particularly Bitcoin, present a compelling challenge for algorithmic trading systems [1]. This project aims to address this challenge by developing AI-powered trading bots capable of making intelligent buy, sell, and hold decisions based on technical indicators and historical price patterns. The focus of this phase is to implement and evaluate trading strategies optimised by nature-inspired algorithms, using historical Bitcoin OHLCV data spanning several years. 
 
-For Deliverable 2, mainly two algorithms were selected from our prior research:  Modified Particle Swarm Optimisation with Simulated Annealing (PSO-SA) and the Artificial Bee Colony (ABC) algorithm. All two methods are rooted in swarm intelligence and have demonstrated robust search capabilities across diverse optimization problems. PSO was implemented as a useful baseline for comparison. 
+For Deliverable 2, mainly two algorithms were selected from our prior research:  Modified Particle Swarm Optimisation with Simulated Annealing (PSO-SA) and the Artificial Bee Colony (ABC) algorithm. All two methods are rooted in swarm intelligence and have demonstrated robust search capabilities across diverse optimisation problems. PSO was implemented as a useful baseline for comparison. 
 
-The PSO-SA algorithm combines Particle Swarm Optimization's global search with Simulated Annealing's local refinement, making it well-suited for tuning technical indicators in noisy, dynamic financial markets [2]. The Artificial Bee Colony (ABC) algorithm, inspired by honeybee foraging, balances exploration and exploitation through a decentralized process involving employed, onlooker, and scout bees, offering a simple yet effective approach to optimizing multi-parameter trading strategies [3]. 
+The PSO-SA algorithm combines Particle Swarm Optimisation's global search with Simulated Annealing's local refinement, making it well-suited for tuning technical indicators in noisy, dynamic financial markets [2]. The Artificial Bee Colony (ABC) algorithm, inspired by honeybee foraging, balances exploration and exploitation through a decentralised process involving employed, onlooker, and scout bees, offering a simple yet effective approach to optimising multi-parameter trading strategies [3]. 
 
-This report outlines the implementation of optimization algorithms to optimize a rule-based trading strategy using technical indicators such as Simple Moving Average (SMA) , Exponential Moving Average (EMA) and Linear-weighted moving average (LMA). The trading bots are trained on historical data and evaluated on unseen test data, with performance measured based on the final cash value held at the end of the simulation, reflecting the profitability of the strategy. 
+This report outlines the implementation of optimisation algorithms to optimise a rule-based trading strategy using technical indicators such as Simple Moving Average (SMA), Exponential Moving Average (EMA) and Linear-weighted moving average (LMA). The trading bots are trained on historical data and evaluated on unseen test data, with performance measured based on the final cash value held at the end of the simulation, reflecting the profitability of the strategy. 
 
 \section{Overview of Investigated Algorithms}
 % needs cutting and rewriting
-In the first part of the project, six algorithms were explored and analysed, focusing on their inspirations, operational mechanics, and effectiveness in tackling complex optimization problems. These algorithms are categorized based on their sources of inspiration—Swarm Intelligence, Physical Phenomena and Laws of Science, and Organism-Based strategies. Each algorithm brings unique features to the field of optimization, as well as various levels of adaptability and convergence efficiency. 
+In the first part of the project, six algorithms were explored and analysed, focusing on their inspirations, operational mechanics, and effectiveness in tackling complex optimisation problems. These algorithms are categorised based on their sources of inspiration—Swarm Intelligence, Physical Phenomena and Laws of Science, and Organism-Based strategies. Each algorithm brings unique features to the field of optimisation, as well as various levels of adaptability and convergence efficiency. 
 
-Particle Swarm Optimization with Simulated Annealing (PSO-SA) combines Particle Swarm Optimization (PSO) and Simulated Annealing (SA). PSO draws inspiration from the social behavior of birds and fish, where individuals update their positions based on both personal and group knowledge. SA introduces randomness via the Metropolis criterion, enabling convergence toward the global optimum. The hybrid PSO-SA leverages PSO's global search ability with SA's local search strength. To avoid early convergence, PSO-SA uses SA’s temperature parameter, initially high to increase randomness and explore diverse areas. As temperature decreases, the search becomes more exploitative, helping the algorithm escape local optima and refine solutions. [2] 
+Particle Swarm Optimisation with Simulated Annealing (PSO-SA) combines Particle Swarm Optimisation (PSO) and Simulated Annealing (SA). PSO draws inspiration from the social behaviour of birds and fish, where individuals update their positions based on both personal and group knowledge. SA introduces randomness via the Metropolis criterion, enabling convergence toward the global optimum. The hybrid PSO-SA leverages PSO's global search ability with SA's local search strength. To avoid early convergence, PSO-SA uses SA's temperature parameter, initially high to increase randomness and explore diverse areas. As temperature decreases, the search becomes more exploitative, helping the algorithm escape local optima and refine solutions. [2] 
 
-The Gravitational Search Algorithm (GSA) is inspired by physical phenomena. It models optimization as agents interacting through Newtonian gravity, where heavier masses attract others more strongly. This encourages diverse movement early, aiding in convergence. However, as gravitational forces weaken, exploration diminishes, and the algorithm can stagnate near local optima.[5] 
+The Gravitational Search Algorithm (GSA) is inspired by physical phenomena. It models optimisation as agents interacting through Newtonian gravity, where heavier masses attract others more strongly. This encourages diverse movement early, aiding in convergence. However, as gravitational forces weaken, exploration diminishes, and the algorithm can stagnate near local optima.[5] 
 
-Grey Wolf Optimizer (GWO) is a swarm intelligence algorithm inspired by grey wolf hunting and leadership. It updates solutions using a weighted influence from the top four wolves—alpha, beta, delta, and omega. This balances exploration and exploitation by considering multiple leaders, reducing premature convergence. [6] 
+Grey Wolf Optimiser (GWO) is a swarm intelligence algorithm inspired by grey wolf hunting and leadership. It updates solutions using a weighted influence from the top four wolves—alpha, beta, delta, and omega. This balances exploration and exploitation by considering multiple leaders, reducing premature convergence. [6] 
 
-Harris Hawks Optimization (HHO) is based on Harris hawks' cooperative hunting. It dynamically switches between exploration/exploitation based on an escape energy variable tied to solution quality. This helps HHO adapt and escape local optima by increasing randomness when needed.[7] 
+Harris Hawks Optimisation (HHO) is based on Harris hawks' cooperative hunting. It dynamically switches between exploration/exploitation based on an escape energy variable tied to solution quality. This helps HHO adapt and escape local optima by increasing randomness when needed.[7] 
 
 Artificial Bee Colony (ABC) is a swarm intelligence algorithm based on bee foraging. It divides bees into employed (exploit known solutions), onlooker (choose based on quality), and scout (randomly explore) roles. This division prevents early convergence by continuously exploring while refining solutions. [3] 
 
 The Firefly Algorithm (FA) uses brightness-based attraction inspired by fireflies. Solutions move toward brighter ones, with influence decreasing with distance. This limits the global best's dominance and promotes distributed searching. However, performance relies on tuning attractiveness and can slow in high-dimensional spaces.[8] 
 
-These algorithms offer a spectrum of nature-inspired approaches. PSO-SA and ABC were chosen for implementation due to their complementary strengths—PSO-SA for balanced global/local search via hybridization, and ABC for robust diversity handling. These traits suit them for complex financial optimization tasks. 
+These algorithms offer a spectrum of nature-inspired approaches. PSO-SA and ABC were chosen for implementation due to their complementary strengths—PSO-SA for balanced global/local search via hybridisation, and ABC for robust diversity handling. These traits suit them for complex financial optimisation tasks. 
 
 \section{Bot Design and Parameterisation}
-Bitcoin as an asset is fundamentally unlike other classes of assets. It is a currency rather than a stock and is consequently closer to foreign exchange trading rather than stock trading. There are few, if any, fundamental indicators for Bitcoin making it disproportionately impacted by naked supply and demand. This was especially true in its early days as it hadn’t yet gained a reputation amongst younger investors as the trendy new replacement for gold as a store of value. Thus, common technical analysis indicators were chosen as inputs for the trading signal. 
+Bitcoin as an asset is fundamentally unlike other classes of assets. It is a currency rather than a stock and is consequently closer to foreign exchange trading rather than stock trading. There are few, if any, fundamental indicators for Bitcoin making it disproportionately impacted by naked supply and demand. This was especially true in its early days as it hadn't yet gained a reputation amongst younger investors as the trendy new replacement for gold as a store of value. Thus, common technical analysis indicators were chosen as inputs for the trading signal. 
 
 Three moving averages common in technical analysis are included in the trading signal informing the bot:[9] 
 
@@ -116,11 +116,11 @@ During the training loop, the number of days for each of the above moving averag
     \item LMA momentum 
 \end{enumerate}
 
-The information provided to the trading bot may not be equally as important to the final trading signal. In recognition of this, five weight parameters were added which control the strength of each of the above five indicators. 
+The information provided to the trading bot may not be equally important to the final trading signal. In recognition of this, five weight parameters were added which control the strength of each of the above five indicators. 
 
 \begin{enumerate}[start=6]
-    \item SMA – EMA weight 
-    \item EMA – LMA weight 
+    \item SMA - EMA weight 
+    \item EMA - LMA weight 
     \item SMA momentum weight 
     \item EMA momentum weight 
     \item LMA momentum weight 
@@ -184,25 +184,25 @@ ABC splits the swarm population into three distinct roles which focus on either 
 This role-based approach allows the simultaneous exploitation of the known best positions within the search space and exploration of the entire search space through random sampling. 
 
 \subsection{PSO-SA} 
-PSO-SA utilises a hybrid algorithm approach by incorporating Simulated Annealing (SA) into the new position acceptance process. When the PSO particle position update process occurs, particles have their fitness evaluated. The acceptance process uses the temperature during a particular iteration. Higher temperatures allow sub-optimal updates with a higher probability which allows the initial exploration of the search space even if new positions aren’t optimal, while lower temperatures encourage exploitation with lower probabilities of accepting worse new positions.   
+PSO-SA utilises a hybrid algorithm approach by incorporating Simulated Annealing (SA) into the new position acceptance process. When the PSO particle position update process occurs, particles have their fitness evaluated. The acceptance process uses the temperature during a particular iteration. Higher temperatures allow suboptimal updates with a higher probability which allows the initial exploration of the search space even if new positions aren't optimal, while lower temperatures encourage exploitation with lower probabilities of accepting worse new positions.   
 
-The metropolis process is time consuming, especially at lower temperatures as velocities and positions are repeatedly recalculated for particles which fail the acceptance criteria. Due to time constraints, our implementation contains a hard limit on how many times a particle can be recalculated during the SA loop. 
+The metropolis process is time-consuming, especially at lower temperatures as velocities and positions are repeatedly recalculated for particles which fail the acceptance criteria. Due to time constraints, our implementation contains a hard limit on how many times a particle can be recalculated during the SA loop. 
 
 \section{Experiments and Evaluation Methodology}
 
 This project used daily Bitcoin OHLCV (Open, High, Low, Close, Volume) data from the publicly available Bitcoin Historical Dataset on Kaggle [4]. The dataset spans from 2014 to 2022, offering clean and consistent daily price and volume records. We selected the full available date range to ensure sufficient variation in market conditions for both training and evaluation. Although only the daily data was used in this project, the original dataset [4] also includes hourly and minute-level data. 
 
-The daily data was split into a training set (covering the years upto 2019) consisting of 1,861 data points, and a testing set (covering from 2020 ) with 792 previously unseen data points. This split reflects a realistic workflow in which the trading bot is optimized using historical data and then evaluated on future data to assess its generalizability and robustness. 
+The daily data was split into a training set (covering the years up to 2019) consisting of 1,861 data points, and a testing set (covering from 2020) with 792 previously unseen data points. This split reflects a realistic workflow in which the trading bot is optimised using historical data and then evaluated on future data to assess its generalizability and robustness. 
 
-We employed a grid search approach to tune the strategy’s hyperparameters for each optimizer (PSO, PSO-SA, ABC). Over 100 iterations, we explored combinations of values for parameters such as population size, acceleration coefficients, and others. Each candidate configuration was evaluated using a custom scoring function, which was designed to reflect desirable characteristics in a trading bot’s behavior. 
-The final selected hyperparameters for each optimizer are listed in the table below. The number 42 was used as the seed in the grid search, as well as for initial training and testing.  
+We employed a grid search approach to tune the strategy's hyperparameters for each optimiser (PSO, PSO-SA, ABC). Over 100 iterations, we explored combinations of values for parameters such as population size, acceleration coefficients, and others. Each candidate configuration was evaluated using a custom scoring function, which was designed to reflect desirable characteristics in a trading bot's behaviour. 
+The final selected hyperparameters for each optimiser are listed in the table below. The number 42 was used as the seed in the grid search, as well as for initial training and testing.  
 
 \begin{table}[ht]
     \centering
     \label{tab:optimizers}
     \begin{tabular}{llr}
       \toprule
-      \textbf{Optimizer} & \textbf{Hyper-parameter}                          & \textbf{Value} \\ 
+      \textbf{Optimiser} & \textbf{Hyper-parameter}                          & \textbf{Value} \\ 
       \midrule
       \multirow{3}{*}{PSO}      
         & Number of agents in the swarm (\texttt{population\_size})       & 10   \\
@@ -221,14 +221,14 @@ The final selected hyperparameters for each optimizer are listed in the table be
         & Position Age Limit                                            & 3    \\
       \bottomrule
     \end{tabular}
-    \caption{Optimizers and discovered optimal hyperparameters}
+    \caption{Optimisers and discovered optimal hyperparameters}
 \end{table}
 
-Due to time and resource constraints, the grid search was performed only for a selected set of parameter values, and additional parameters would have been explored with more time and resources. The evaluation cost in optimization algorithms like PSO, PSO-SA, and ABC is a key practical challenge. Each candidate solution requires running a trading simulation over historical data, which can be computationally expensive. The number of evaluations grows with the parameter space size and optimization iterations. The evaluation process involves training the strategy on historical data, calculating custom performance metrics, and assessing results, leading to substantial resource usage in terms of time and memory. A major trade-off exists between exploring a broad parameter space, which can yield better results but increases evaluation time, and narrowing the search space, which reduces time but may miss optimal solutions. Given limited resources, efficient allocation is crucial. Techniques like parallel computing can help mitigate evaluation costs, but careful consideration of available resources is still needed to balance performance with practicality. 
+Due to time and resource constraints, the grid search was performed only for a selected set of parameter values, and additional parameters would have been explored with more time and resources. The evaluation cost in optimisation algorithms like PSO, PSO-SA, and ABC is a key practical challenge. Each candidate solution requires running a trading simulation over historical data, which can be computationally expensive. The number of evaluations grows with the parameter space size and optimisation iterations. The evaluation process involves training the strategy on historical data, calculating custom performance metrics, and assessing results, leading to substantial resource usage in terms of time and memory. A major trade-off exists between exploring a broad parameter space, which can yield better results but increases evaluation time, and narrowing the search space, which reduces time but may miss optimal solutions. Given limited resources, efficient allocation is crucial. Techniques like parallel computing can help mitigate evaluation costs, but careful consideration of available resources is still needed to balance performance with practicality. 
 
 \section{Results and Analysis}
 \subsection{Summary of Training Statistics}
-We compared three population-based optimisers across training and testing phases, using daily Bitcoin OHLCV data spanning 2014–2019 for training and 2020–2022 for testing. Our primary evaluation metric was final portfolio value (cash after liquidating positions), averaged over five random seeds, with standard deviation to capture robustness. 
+We compared three population-based optimisers across training and testing phases, using daily Bitcoin OHLCV data spanning 2014-2019 for training and 2020-2022 for testing. Our primary evaluation metric was final portfolio value (cash after liquidating positions), averaged over five random seeds, with standard deviation to capture robustness. 
 
 \begin{table}[ht]
     \centering
@@ -257,7 +257,7 @@ Table \ref{tab:algorithm_scores} clearly shows that PSO achieves the highest tra
     \label{fig:convergence}
 \end{figure}
 
-In Figure 1, PSO shows the steepest initial ascent but quickly plateaus at a suboptimal fitness on the test set. ABC climbs more gradually with low inter-seed variance. PSO-SA follows PSO’s rapid rise in early iterations, then leverages a Metropolis acceptance (simulated annealing) to escape local traps and achieve the highest final fitness with the tightest clustering. 
+In Figure 1, PSO shows the steepest initial ascent but quickly plateaus at a suboptimal fitness on the test set. ABC climbs more gradually with low inter-seed variance. PSO-SA follows PSO's rapid rise in early iterations, then leverages a Metropolis acceptance (simulated annealing) to escape local traps and achieve the highest final fitness with the tightest clustering. 
 
 \subsubsection{Robustness}
 Measured by training-set standard deviation across seeds (PSO $\approx$ 6537, ABC $\approx$ 4263, PSO-SA $\approx$ 3934),  PSO-SA consistently exhibits the lowest variability in both training and test returns, making it the most repeatable. ABC sits in the middle—its scout phase injects diversity but also yields moderate scatter. Pure PSO, lacking any "escape" mechanism, is prone to getting stuck; one unlucky seed can drastically underperform. 
@@ -266,7 +266,7 @@ Measured by training-set standard deviation across seeds (PSO $\approx$ 6537, AB
 \begin{enumerate}
     \item    \textbf{PSO}: Inertia-cognitive-social updates provide broad early exploration, but once particles converge on the global best they rarely deviate, leading to premature stagnation. 
     \item     \textbf{ABC}: Alternates exploitation (employed/onlooker bees refining known sources) with exploration (scout bees randomly seeding new positions), maintaining diversity at the cost of slower convergence. 
-    \item     \textbf{PSO-SA}: Adds a Metropolis acceptance rule to PSO’s velocity update. High “temperature” early on allows uphill moves (exploration); as temperature cools, it reverts to pure PSO (exploitation). This dynamic schedule balances global search and local refinement. 
+    \item     \textbf{PSO-SA}: Adds a Metropolis acceptance rule to PSO's velocity update. High “temperature” early on allows uphill moves (exploration); as temperature cools, it reverts to pure PSO (exploitation). This dynamic schedule balances global search and local refinement. 
 \end{enumerate}
 
 \subsubsection{Equity Curves}
@@ -276,11 +276,11 @@ Measured by training-set standard deviation across seeds (PSO $\approx$ 6537, AB
     \caption{Average Equity Curves}
     \label{fig:equity}
 \end{figure}
-Figure \ref{fig:equity} shows the mean portfolio value over the unseen test period. PSO-SA delivers the smoothest equity growth—smaller drawdowns and steady gains. PSO’s curve is far more jagged, echoing its over-sensitivity to initial seeds. ABC yields the flattest, most conservative growth. 
+Figure \ref{fig:equity} shows the mean portfolio value over the unseen test period. PSO-SA delivers the smoothest equity growth - smaller drawdowns and steady gains. PSO's curve is far more jagged, echoing its over-sensitivity to initial seeds. ABC yields the flattest, most conservative growth. 
 
 \subsubsection{Indicator Evolution}
 
-We visualise how the learned thresholds and buy/sell signals evolve on the same test series for each algorithm, show how the buy/sell indicator toggles between +1, –1, and 0 over time. PSO-SA’s signal exhibits balanced responsiveness: it captures major up-trends and down-trends without excessive whipsaws. PSO generates more frequent, erratic flips, explaining its higher transaction count and associated slippage. ABC produces sparser signals, often missing shorter trend reversals. 
+We visualise how the learned thresholds and buy/sell signals evolve on the same test series for each algorithm, show how the buy/sell indicator toggles between +1, -1, and 0 over time. PSO-SA's signal exhibits balanced responsiveness: it captures major up-trends and down-trends without excessive whipsaws. PSO generates more frequent, erratic flips, explaining its higher transaction count and associated slippage. ABC produces sparser signals, often missing shorter trend reversals. 
 
 The trading signal figures for this section are provided in the Appendix. Only the first signal in a series of recurring signals is executed. If there are multiple repeating buy signals, the asset is held. The reverse is true for sell signals.
 
@@ -292,17 +292,17 @@ All three algorithms capture the major Bitcoin uptrends, but PSO often chases mi
     \caption{Parameter evolution}
     \label{fig:parameter}
 \end{figure}
-Figure \ref{fig:parameter} tracks five key momentum weights (w1–w5) across seeds for each algorithm’s best solution per run. ABC’s weights fluctuate most dramatically (due to its scout resets). PSO-SA’s curves are the smoothest, signalling highly consistent parameter choices. PSO shows sporadic jumps, reflecting its greedy no-escape policy. 
+Figure \ref{fig:parameter} tracks five key momentum weights (w1-w5) across seeds for each algorithm's best solution per run. ABC's weights fluctuate most dramatically (due to its scout resets). PSO-SA's curves are the smoothest, signalling highly consistent parameter choices. PSO shows sporadic jumps, reflecting its greedy no-escape policy. 
 
 \subsubsection{Parameter Sensitivity}
-We inspected correlations among the ten learned hyperparameters (averaged over seeds).
+We inspected correlations amongst the ten learned hyperparameters (averaged over seeds).
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.9\textwidth]{./assets/sensitivity.png}
     \caption{Parameter correlation heatmap}
     \label{fig:sensitivity}
 \end{figure}
-Figure \ref{fig:sensitivity} reveals pairwise correlations among the ten optimised parameters. A striking -0.84 correlation between \texttt{window\_sma} and $w_2$ (EMA$-$LMA difference weight) suggests that longer SMA windows are systematically offset by more negative momentum weights. Such insights can drive more efficient future grid searches by pruning redundant dimensions. 
+Figure \ref{fig:sensitivity} reveals pairwise correlations amongst the ten optimised parameters. A striking -0.84 correlation between \texttt{window\_sma} and $w_2$ (EMA$-$LMA difference weight) suggests that longer SMA windows are systematically offset by more negative momentum weights. Such insights can drive more efficient future grid searches by pruning redundant dimensions. 
 
 
 \section{Conclusion}
