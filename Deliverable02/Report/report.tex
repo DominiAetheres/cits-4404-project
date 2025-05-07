@@ -72,6 +72,8 @@ The PSO-SA algorithm combines Particle Swarm Optimisation's global search with S
 
 This report outlines the implementation of optimisation algorithms to optimise a rule-based trading strategy using technical indicators such as Simple Moving Average (SMA), Exponential Moving Average (EMA) and Linear-weighted moving average (LMA). The trading bots are trained on historical data and evaluated on unseen test data, with performance measured based on the final cash value held at the end of the simulation, reflecting the profitability of the strategy. 
 
+\newpage
+
 \section{Overview of Investigated Algorithms}
 
 \begin{table}[h!]
@@ -303,10 +305,10 @@ All three algorithms capture the major Bitcoin uptrends, but PSO often chases mi
 Figure \ref{fig:parameter} tracks five key momentum weights (w1-w5) across seeds for each algorithm's best solution per run. ABC's weights fluctuate most dramatically (due to its scout resets). PSO-SA's curves are the smoothest, signalling highly consistent parameter choices. PSO shows sporadic jumps, reflecting its greedy no-escape policy. 
 
 \subsubsection{Parameter Sensitivity}
-We inspected correlations amongst the ten learned hyperparameters (averaged over seeds).
+We inspected correlations amongst the ten learned hyperparameters (averaged over seeds and algorithms).
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.9\textwidth]{./assets/sensitivity.png}
+    \includegraphics[width=\textwidth]{./assets/sensitivity.png}
     \caption{Parameter correlation heatmap}
     \label{fig:sensitivity}
 \end{figure}
