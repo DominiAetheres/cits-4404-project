@@ -64,8 +64,8 @@
 
 \newpage
 \tableofcontents
-\newpage
 
+\newpage
 \section{Introduction}
 The increasing volatility and complexity of cryptocurrency markets, particularly Bitcoin, present a compelling challenge for algorithmic trading systems \cite{dakalbab2024artificial}. This project aims to address this challenge by developing AI-powered trading bots capable of making intelligent buy, sell, and hold decisions based on technical indicators and historical price patterns. The focus of this phase is to implement and evaluate trading strategies optimised by nature-inspired algorithms, using historical Bitcoin OHLCV data spanning several years. 
 
@@ -79,13 +79,13 @@ This report outlines the implementation of optimisation algorithms to optimise a
 
 \section{Overview of Investigated Algorithms}
 
-\begin{table}[h!]
+\begin{table}[H]
     \centering
     \begin{tabularx}{\textwidth}{X X}
       \toprule
       \textbf{Algorithm} & \textbf{Description}\\
       \midrule
-      Particle Swarm Optimisation with Simulated Annealing (PSO-SA) \cite{psosa} & Combines Partical Swarm Optimisation (PSO) \cite{pso} with Simulated Annealing (SA) to increase the probability of exploration of the search space. It accepts new positions for particles that are worse depending on the Metropolis effect as part of SA. \\
+      Particle Swarm Optimisation with Simulated Annealing (PSO-SA) \cite{psosa} & Combines Particle Swarm Optimisation (PSO) \cite{pso} with Simulated Annealing (SA) to increase the probability of exploration of the search space. It accepts new positions for particles that are worse depending on the Metropolis effect as part of SA. \\
       Grey Wolf Optimiser (GWO) \cite{wolf} & Emulates the social hierarchy of grey wolves. The fitness of the particles decides the seniority of each of the individuals. In the update step, particles are drawn more strongly to more senior individuals. This means the search is dependent on the top few positions rather than a single best.\\
       Gravitational Search Algorithm (GSA) \cite{GSA} & Each particle within the swarm is assigned a gravitational value based on its fitness. Position updates are calculated based on the sum of the gravitational pull with all other bodies.\\
       Harris Hawks Optimiser (HHO) \cite{hawks} & Emulates the hunting behaviour of Harris Hawks. Individuals searching a large area before selecting specific areas to exploit.\\
@@ -97,6 +97,7 @@ This report outlines the implementation of optimisation algorithms to optimise a
     \label{tab:algorithms}
   \end{table}
 
+\newpage
 \section{Bot Design and Parameterisation}
 Bitcoin as an asset is fundamentally unlike other classes of assets. It is a currency rather than a stock and is consequently closer to foreign exchange trading rather than stock trading. There are few, if any, fundamental indicators for Bitcoin making it disproportionately impacted by naked supply and demand. This was especially true in its early days as it hadn't yet gained a reputation amongst younger investors as the trendy new replacement for gold as a store of value. Thus, common technical analysis indicators were chosen as inputs for the trading signal. 
 
@@ -127,6 +128,7 @@ During the training loop, the number of days for each of the above moving averag
     \item LMA momentum 
 \end{enumerate}
 
+\newpage
 The information provided to the trading bot may not be equally important to the final trading signal. In recognition of this, five weight parameters were added which control the strength of each of the above five indicators. 
 
 \begin{enumerate}[start=6]
@@ -137,7 +139,7 @@ The information provided to the trading bot may not be equally important to the 
     \item LMA momentum weight 
 \end{enumerate}
 
-\begin{table}[ht]
+\begin{table}[H]
     \centering
     \begin{tabularx}{\textwidth}{X X X}
       \toprule
@@ -159,6 +161,7 @@ The information provided to the trading bot may not be equally important to the 
     \label{tab:parameters}
   \end{table}
 
+\newpage
 The final component of the trading signal is the threshold parameter $\theta$. When the signal value exceeds the positive threshold, a buy signal is triggered and vice versa. This simplifies the trading signal to a value between 1 and -1 for buy and sell respectively. The trading signal is as follows where the function $s_{raw}$ produces the unclipped trading signal at time interval $t$ and $s$ is the final clipped trading signal.
 
 \begin{multline}
@@ -179,9 +182,19 @@ There are ten total parameters which are optimised for use by the bot (Table \re
 \section{Algorithm Selection and Implementation}
 Both ABC and PSO-SA can trace their lineages to the original PSO algorithm. PSO was the initial introduction of a nature-inspired optimisation algorithm based on the flocking or swarming behaviour of animals such as birds or fish. PSO is suited to domains with high dimensionality due to its computational efficiency compared to methods based on genetic algorithms. The time available to investigate and tune our models was limited which was a factor in the decision to select PSO-based algorithms. 
 
-Early convergence due to a bias towards exploitation rather than exploration is a common issue with PSO. Although the magnitude of velocity updates of the individuals were random, the direction was always towards a combination of global best and personal best depending on the hyperparameters chosen. ABC and PSO-SA both address this by increasing the amount of exploration performed in the search space. 
+Early convergence due to a bias towards exploitation rather than exploration is a common issue with PSO. Although the magnitude of velocity updates of the individuals are random, the direction are always towards a combination of global best and personal best depending on the hyperparameters chosen. ABC and PSO-SA both address this by increasing the amount of exploration performed in the search space. 
 
-The papers introducing ABC and PSO-SA have benchmarked their performance on a variety of search spaces, including high dimensional and multi-modal functions. In this report, the efficacy of the different exploration methods will be tested in comparison to basic  PSO. 
+The papers introducing ABC and PSO-SA have benchmarked their performance on a variety of search spaces, including high dimensional and multi-modal functions. In this report, the efficacy of the different exploration methods will be tested in comparison to basic PSO. 
+
+Our implementation of each of these algorithms can be found at:\newline
+\href{https://github.com/DominiAetheres/cits-4404-project}{https://github.com/DominiAetheres/cits-4404-project}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./assets/opt_alg.png}
+    \caption{Flowcharts for the three implemented algorithms}
+    \label{fig:alg-flowchart}
+\end{figure}
 
 \subsection{ABC} 
 ABC splits the swarm population into three distinct roles which focus on either exploration or exploitation: 
@@ -323,7 +336,7 @@ In this project, we successfully implemented and evaluated three nature-inspired
 
 The project found that standard PSO converges quickly onto extrema. In contrast, PSO-SA and ABC tended to converge more slowly overall as they traded off immediate exploitation for a broader search. While PSO's faster initial convergence might be advantageous for simpler search spaces, the exploration of PSO-SA and ABC can be important for tackling complex optimisation problems. It turned out that our search space may have been relatively simple, or too limited as PSO performed the best by immediately exploiting to the best solution.
 
-Defining the search space by parameterising indicator window sizes and weights resulted in a high-dimensional problem, and we also learned about some inter-dependencies between these parameters. The performance was sensitive not only to the algorithm's effectiveness but also to the choice of indicators and the structure of the trading rules. Financial data often changes its patterns over time, making it difficult for strategies optimised on past data to remain consistently effective, illustrating the limitations of back-testing.
+Defining the search space by parameterising indicator window sizes and weights resulted in a high-dimensional problem, and we also learned about some interdependencies between these parameters. The performance was sensitive not only to the algorithm's effectiveness but also to the choice of indicators and the structure of the trading rules. Financial data often changes its patterns over time, making it difficult for strategies optimised on past data to remain consistently effective, illustrating the limitations of back-testing.
 
 For future work, several paths could be explored. Testing the optimised bots in a live trading simulation would provide further insights into their reliability. Better results might be achieved by incorporating more advanced indicators or features, or by exploring other algorithms from Part 1 (e.g., GWO, HHO). Furthermore, refining the evaluation to include consistency metrics, such as the standard deviation of scores, in addition to the final profit, may lead to more robust and reliable trading strategies. 
 
