@@ -75,7 +75,7 @@ class PSOSA(Optimiser):
         self.cool_rate = cool_rate
 
         # set max SA iterations
-        self.max_disturbance = 5
+        self.max_disturbance = 10
 
 
     def calculate_weight(self):
@@ -182,7 +182,7 @@ class PSOSA(Optimiser):
             g_dv = self.g_increment * g_rand_coef * (self.g_best_pos - self.swarm_pos)
 
             # perform masking on velocity to preserve accepted velocities
-            temp_swarm_vel = (mask * temp_swarm_vel) + (mask * (w * self.swarm_vel + p_dv + g_dv))
+            temp_swarm_vel = (mask * temp_swarm_vel) + ((1 - mask) * (w * self.swarm_vel + p_dv + g_dv))
             temp_swarm_pos = self.swarm_pos + temp_swarm_vel
 
             # clip within search bounds
