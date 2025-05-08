@@ -14,8 +14,8 @@
 \usepackage{amsfonts}
 \usepackage{multirow}
 
-\usepackage{biblatex}
-\addbibresource{main.bib}
+% \usepackage{biblatex}
+% \addbibresource{main.bib}
 
 
 % >= 3.45cm is too large to fit 2 names per row
@@ -252,6 +252,7 @@ The final selected hyperparameters for each optimiser are listed in the table be
 
 Due to time and resource constraints, the grid search was performed only for a selected set of parameter values, and additional parameters would have been explored with more time and resources. The evaluation cost in optimisation algorithms like PSO, PSO-SA, and ABC is a key practical challenge. Each candidate solution requires running a trading simulation over historical data, which can be computationally expensive. The number of evaluations grows with the parameter space size and optimisation iterations. The evaluation process involves training the strategy on historical data, calculating custom performance metrics, and assessing results, leading to substantial resource usage in terms of time and memory. A major trade-off exists between exploring a broad parameter space, which can yield better results but increases evaluation time, and narrowing the search space, which reduces time but may miss optimal solutions. Given limited resources, efficient allocation is crucial. Techniques like parallel computing can help mitigate evaluation costs, but careful consideration of available resources is still needed to balance performance with practicality. 
 
+\newpage
 \section{Results and Analysis}
 \subsection{Summary of Training Statistics}
 We compared three population-based optimisers across training and testing phases, using daily Bitcoin OHLCV data spanning 2014-2019 for training and 2020-2022 for testing. Our primary evaluation metric was final portfolio value (cash after liquidating positions), averaged over five random seeds, with standard deviation to capture robustness. 
@@ -304,6 +305,7 @@ Measured by training-set standard deviation across seeds (PSO $\approx$ 6537, AB
 \end{figure}
 Figure \ref{fig:equity} shows the mean portfolio value over the unseen test period. PSO-SA delivers the smoothest equity growth - smaller drawdowns and steady gains. PSO's curve is far more jagged, echoing its over-sensitivity to initial seeds. ABC yields the flattest, most conservative growth. 
 
+\newpage
 \subsubsection{Indicator Evolution}
 
 We visualise how the learned thresholds and buy/sell signals evolve on the same test series for each algorithm, show how the buy/sell indicator toggles between +1, -1, and 0 over time. PSO-SA's signal exhibits balanced responsiveness: it captures major up-trends and down-trends without excessive whipsaws. PSO generates more frequent, erratic flips, explaining its higher transaction count and associated slippage. ABC produces sparser signals, often missing shorter trend reversals. 
@@ -312,7 +314,7 @@ The trading signal figures for this section are provided in the Appendix. Only t
 
 All three algorithms capture the major Bitcoin uptrends, but PSO often chases minor fluctuations (many small trades), consistent with its overfitting. ABC trades less frequently, while PSO-SA provides a middle ground. 
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{./assets/parameter_weights.png}
     \caption{Parameter evolution}
@@ -320,9 +322,10 @@ All three algorithms capture the major Bitcoin uptrends, but PSO often chases mi
 \end{figure}
 Figure \ref{fig:parameter} tracks five key momentum weights (w1-w5) across seeds for each algorithm's best solution per run. ABC's weights fluctuate most dramatically (due to its scout resets). PSO-SA's curves are the smoothest, signalling highly consistent parameter choices. PSO shows sporadic jumps, reflecting its greedy no-escape policy. 
 
+\newpage
 \subsubsection{Parameter Sensitivity}
 We inspected correlations amongst the ten learned hyperparameters (averaged over seeds and algorithms).
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{./assets/sensitivity.png}
     \caption{Parameter correlation heatmap}
@@ -331,6 +334,7 @@ We inspected correlations amongst the ten learned hyperparameters (averaged over
 Figure \ref{fig:sensitivity} reveals pairwise correlations amongst the ten optimised parameters. A striking -0.84 correlation between \texttt{window\_sma} and $w_2$ (EMA$-$LMA difference weight) suggests that longer SMA windows are systematically offset by more negative momentum weights. Such insights can drive more efficient future grid searches by pruning redundant dimensions. 
 
 
+\newpage
 \section{Conclusion}
 In this project, we successfully implemented and evaluated three nature-inspired algorithms: Particle Swarm Optimisation (PSO), PSO with Simulated Annealing (PSO-SA), and Artificial Bee Colony (ABC) for optimising a rule-based Bitcoin trading bot. The core objective was to use these algorithms to find effective parameters for a trading strategy based on Simple, Exponential, and Linear-Weighted Moving Averages (SMA, EMA, LMA). Quantitatively, while PSO achieved the highest average training score (31353.24), its test score (2374.42) was comparable to PSO-SA (2211.53, with a lower training standard deviation of 3934.15) and ABC (2070.11), suggesting challenges in generalisation to new market conditions.
 
@@ -341,7 +345,7 @@ Defining the search space by parameterising indicator window sizes and weights r
 For future work, several paths could be explored. Testing the optimised bots in a live trading simulation would provide further insights into their reliability. Better results might be achieved by incorporating more advanced indicators or features, or by exploring other algorithms from Part 1 (e.g., GWO, HHO). Furthermore, refining the evaluation to include consistency metrics, such as the standard deviation of scores, in addition to the final profit, may lead to more robust and reliable trading strategies. 
 
 \newpage
-\printbibliography
+% \printbibliography
 
 \newpage
 \appendix
